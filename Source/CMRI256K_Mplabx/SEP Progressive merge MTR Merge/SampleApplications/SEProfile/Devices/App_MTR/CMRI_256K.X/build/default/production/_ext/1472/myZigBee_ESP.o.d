@@ -1,0 +1,35 @@
+build/default/production/_ext/1472/myZigBee_ESP.o:  \
+../myZigBee_ESP.c  \
+ ../zigbee.def  \
+../merge_info.h  \
+../../../../../Source/Common/generic.h  \
+ ../../../../../Source/Common/Compiler.h  \
+ ../../../../../Source/ZigBeeStack/zTest.h  \
+ ../../../../../Source/ZigBeeStack//zStack_Profile.h  \
+ ../../../../../Source/ZigBeeStack//zStack_Configuration.h  \
+ ../../../../../Source/ZigBeeStack/zNWK.h  \
+ ../../../../../Source/ZigBeeStack/ZigbeeTasks.h  \
+ ../../../../../Source/ZigBeeStack/zigbee.h  \
+../zigbee.def  \
+ ../../../../../Source/ZigBeeStack/SymbolTime.h  \
+ ../../../../../Source/ZigBeeStack/zZDO.h  \
+ ../../../../../Source/ZCL/Interface/ZCL_Interface.h  \
+ ../../../../../Source/ZigBeeStack/SymbolTime.h  \
+ ../../../../../Source/ZigBeeStack/zAIL.h  \
+ ../../../../../Source/ZCL/Interface/ClusterDomain/General/ZCL_Basic.h  \
+ ../../../../../Source/ZCL/Interface/ClusterDomain/General/ZCL_Identify.h  \
+ ../../../../../Source/ZCL/Interface/ClusterDomain/General/ZCL_Alarm.h  \
+ ../../../../../Source/ZCL/Interface/ClusterDomain/General/ZCL_Commissioning.h  \
+ ../../../../../Source/ZCL/Interface/ClusterDomain/General/ZCL_Power_Configuration.h  \
+ ../../../../../Source/ZCL/Interface/ClusterDomain/SmartEnergy/ZCL_Key_Establishment.h  \
+ ../../../../../Source/ZCL/Interface/ClusterDomain/SmartEnergy/ZCL_DRLC.h  \
+ ../../../../../Source/ZCL/Interface/ClusterDomain/General/ZCL_Time.h  \
+ ../../../../../Source/ZCL/Interface/ClusterDomain/SmartEnergy/ZCL_Message.h  \
+ ../../../../../Source/ZCL/Interface/ClusterDomain/SmartEnergy/ZCL_Metering.h  \
+ ../../../../../Source/ZCL/Interface/ClusterDomain/SmartEnergy/ZCL_Price.h  \
+ ../../../../../Source/ZCL/Interface/ClusterDomain/General/ZCL_Groups.h  \
+ ../../../../../Source/ZCL/Interface/ClusterDomain/General/ZCL_Scenes.h  \
+ ../../../../../Source/ApplicationProfiles/SEProfile/Interface/SE_Interface.h  \
+ ../../../../../Source/ZCL/Interface/ZCL_Utility.h  \
+ ../../../../../Source/ApplicationProfiles/SEProfile/Source/SE_Profile.h  \
+ ../../../../../Source/ApplicationProfiles/SEProfile/Source/SE_MTR/SE_ESP.h 
