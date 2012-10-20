@@ -1,0 +1,466 @@
+/*********************************************************************
+ *
+ *                  HAL
+ *
+ *********************************************************************
+ * FileName:        HAL.c
+ * Dependencies:
+ * Processor:       PIC18 / PIC24 / PIC32
+ * Complier:        MCC18 v3.00 or higher
+ *                  MCC30 v2.05 or higher
+ *                  MCC32 v2.05 or higher
+ * Company:         Microchip Technology, Inc.
+ *
+ * Software License Agreement
+ *
+ * Copyright © 2004-2011 Microchip Technology Inc.  All rights reserved.
+ *
+ * Microchip licenses to you the right to use, copy and distribute Software
+ * only when embedded on a Microchip microcontroller or digital signal
+ * controller and used with a Microchip radio frequency transceiver, which
+ * are integrated into your product or third party product (pursuant to the
+ * sublicense terms in the accompanying license agreement).  You may NOT
+ * modify or create derivative works of the Software.
+ *
+ * If you intend to use this Software in the development of a product for
+ * sale, you must be a member of the ZigBee Alliance.  For more information,
+ * go to www.zigbee.org.
+ *
+ * You should refer to the license agreement accompanying this Software for
+ * additional information regarding your rights and obligations.
+ *
+ * SOFTWARE AND DOCUMENTATION ARE PROVIDED “AS IS” WITHOUT WARRANTY OF ANY
+ * KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION, ANY WARRANTY
+ * OF MERCHANTABILITY, TITLE, NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR
+ * PURPOSE. IN NO EVENT SHALL MICROCHIP OR ITS LICENSORS BE LIABLE OR OBLIGATED
+ * UNDER CONTRACT, NEGLIGENCE, STRICT LIABILITY, CONTRIBUTION, BREACH OF
+ * WARRANTY, OR OTHER LEGAL EQUITABLE THEORY ANY DIRECT OR INDIRECT DAMAGES OR
+ * EXPENSES INCLUDING BUT NOT LIMITED TO ANY INCIDENTAL, SPECIAL, INDIRECT,
+ * PUNITIVE OR CONSEQUENTIAL DAMAGES, LOST PROFITS OR LOST DATA, COST OF
+ * PROCUREMENT OF SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY
+ * THIRD PARTIES (INCLUDING BUT NOT LIMITED TO ANY DEFENSE THEREOF), OR OTHER
+ * SIMILAR COSTS.
+ *
+ * Author               Date    Comment
+ *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *
+ *****************************************************************************/
+
+ /****************************************************************************
+   Includes
+ *****************************************************************************/
+/* Configuration files */
+#include "zigbee.def"
+
+/* Generic files */
+#include "generic.h"
+#include "Compiler.h"
+#include "PPS.h"
+#include "HAL.h"
+#include "Console.h"
+
+//#define DEBUG_ON_NORMAL_BOARD
+/*****************************************************************************
+   Constants and Enumerations
+ *****************************************************************************/
+/* None */
+
+/*****************************************************************************
+   Customizable Macros
+ *****************************************************************************/
+/* None */
+
+/*****************************************************************************
+   Data Structures
+ *****************************************************************************/
+/* None */
+
+/*****************************************************************************
+   Variable Definitions
+ *****************************************************************************/
+/* None */
+
+/*****************************************************************************
+   Function Prototypes
+ *****************************************************************************/
+/* None */
+
+/*****************************************************************************
+  Private Functions
+ *****************************************************************************/
+/* None */
+
+/*****************************************************************************
+  Public Functions
+ *****************************************************************************/
+
+/*******************************************************************************
+HardwareInit
+
+All port directioning and SPI must be initialized before calling ZigBeeInit().
+*******************************************************************************/
+#if defined(__C30__)
+
+void HardwareInit(void)
+{
+	
+	AD1PCFG = 0xFFFF;
+	AD1PCFGH = 0xFFFF;
+	CLKDIV = 0;
+	
+    SPI1CON1 = 0b0000000100111110;
+    SPI1STAT = 0x8000;
+
+    SPI2CON1 = 0b0000000100111110;
+    SPI2STAT = 0x8000;
+
+    #ifdef USE_EXTERNAL_NVM
+        EEPROM_nCS      = 1;
+        EEPROM_nCS_TRIS = 0;
+        IFS2bits.SPI2IF = 1;
+        /* Ensure that these peripheral programable pins are in
+         * the correct I/O direction - not absolutely neccessary
+         * but is the safe thing to do.
+        */
+        #if defined (__PIC24FJ256GB110__) || defined (__PIC24FJ256GB106__)
+            EEPROM_SCK_TRIS = 0;
+            EEPROM_SDO_TRIS = 0;
+            EEPROM_SDI_TRIS = 1;
+            
+            #if defined (__PIC24FJ256GB106__)
+            EEPROM_nWP_TRIS = 0;
+            EEPROM_nWP = 1;
+            
+            EEPROM_nHOLD_TRIS = 0;
+            EEPROM_nHOLD = 1;
+            #endif
+        #endif
+    #endif
+
+    PHY_RESETn = 0;
+    PHY_RESETn_TRIS = 0;
+    PHY_CS = 1;
+    PHY_CS_TRIS = 0;
+    /* Setup the PPS pins such that both SPI1, SPI2 and UART2 will
+     * work properly for the MRF and External EE_PROM and Console
+    */
+    #if defined (__PIC24FJ256GB110__)
+        /* Configure the MRF control pins */
+        RPINR20bits.SDI1R   = 23;   /* SDI1 Data In RP23 pin as RD2 */
+        RPOR0bits.RP0R      = 8;    /* SCK1OUT RP0 pin as RB0 */
+        RPOR7bits.RP15R     = 7;    /* SDO1 Data Out RP15 pin as RF8 */
+
+        /* Configure the EE_PROM PINS */
+        RPINR22bits.SDI2R   = 26;   /* SDI2 Data In RP19 pin as RG8 */
+        RPOR10bits.RP21R    = 11;   /* SCK2OUT RP21 pin as RG6 */
+        RPOR9bits.RP19R     = 10;   /* SDO2 Data Out RP19 pin as RG7 */
+
+        /* Program the UART 2 pins such that data can
+         * be sent and recieved on the Hyper terminal.
+         * This block should be run before ConsoleInit()
+           is called.
+        */
+        RPINR19bits.U2RXR   = 10;   /* RF4/RP10    RECEIVE */
+        RPINR19bits.U2CTSR  = 32;   /* RF12/RPI32  CTS */
+
+        RPOR8bits.RP17R     = 5;        /* RF5/RP17   TRANSMIT */
+        RPOR15bits.RP31R    = 6;       /* RF13/RP31   RTS */
+    
+    #elif defined (__PIC24FJ256GB106__)    
+		PPSUnLock;
+	
+		#if defined(UART_MODE_COMM)
+
+			iPPSInput(IN_FN_PPS_U2RX,IN_PIN_PPS_RP29);
+			iPPSOutput(OUT_PIN_PPS_RP14,OUT_FN_PPS_U2TX);
+
+			iPPSInput(IN_FN_PPS_U1RX,IN_PIN_PPS_RP17);
+			iPPSOutput(OUT_PIN_PPS_RP10,OUT_FN_PPS_U1TX);
+		
+//			#if !defined(DEBUG_ON_NORMAL_BOARD)
+//			iPPSInput(IN_FN_PPS_U2RX,IN_PIN_PPS_RP29);
+//			iPPSOutput(OUT_PIN_PPS_RP14,OUT_FN_PPS_U2TX);
+//
+//			
+//			iPPSInput(IN_FN_PPS_U1RX,IN_PIN_PPS_RP17);
+//			iPPSOutput(OUT_PIN_PPS_RP10,OUT_FN_PPS_U1TX);
+//			#else
+//			//iPPSInput(IN_FN_PPS_U1RX,IN_PIN_PPS_RP29);			//harsha
+//			//iPPSOutput(OUT_PIN_PPS_RP14,OUT_FN_PPS_U1TX);
+//
+//			iPPSInput(IN_FN_PPS_U1RX,IN_PIN_PPS_RP10);
+//			iPPSOutput(OUT_PIN_PPS_RP17,OUT_FN_PPS_U1TX);
+//
+//			
+//			//iPPSInput(IN_FN_PPS_U1RX,IN_PIN_PPS_RP17);
+//			//iPPSOutput(OUT_PIN_PPS_RP10,OUT_FN_PPS_U1TX);
+//			#endif
+
+			/// need work on this more and check for proer connections
+			
+		//	iPPSInput(IN_FN_PPS_U1RX,IN_PIN_PPS_RP17);
+		//	iPPSOutput(OUT_PIN_PPS_RP8,OUT_FN_PPS_U1TX);
+
+		#elif defined(USB_MODE_COMM)
+			iPPSInput(IN_FN_PPS_U2RX,IN_PIN_PPS_RP14);
+			iPPSOutput(OUT_PIN_PPS_RP29,OUT_FN_PPS_U2TX);
+
+			/// need work on this more and check for proer connections
+			
+		//	iPPSInput(IN_FN_PPS_U1RX,IN_PIN_PPS_RP17);
+		//	iPPSOutput(OUT_PIN_PPS_RP8,OUT_FN_PPS_U1TX);
+
+		#endif
+		//MRF24J40
+		iPPSInput(IN_FN_PPS_SDI1,IN_PIN_PPS_RP26);
+		iPPSOutput(OUT_PIN_PPS_RP19,OUT_FN_PPS_SDO1);
+		iPPSOutput(OUT_PIN_PPS_RP21,OUT_FN_PPS_SCK1OUT);
+		
+		//EEPROM
+		iPPSInput(IN_FN_PPS_SDI2,IN_PIN_PPS_RP23);
+		iPPSOutput(OUT_PIN_PPS_RP4,OUT_FN_PPS_SDO2);
+		iPPSOutput(OUT_PIN_PPS_RP3,OUT_FN_PPS_SCK2OUT);
+		
+		//iPPSInput(IN_FN_PPS_INT1,IN_PIN_PPS_RP11);
+	
+		PPSLock;
+    #endif
+
+	#if !defined(YODA_V1A) && !defined(YODA_V1)
+    /* The Explorer 16 LEDs */
+    /*This intilization for Identify Mode LED glowing*/
+    TRISAbits.TRISA2 = 0;
+    TRISAbits.TRISA3 = 0;
+
+    TRISAbits.TRISA6 = 0;
+    TRISAbits.TRISA7 = 0;
+    #endif
+    
+
+
+    RFIF = 0;
+    RFIE = 1;
+
+    if(RF_INT_PIN == 0)
+    {
+        RFIF = 1;
+    }
+    
+    #if !defined(YODA_V1A) && !defined(YODA_V1)
+    /*This intilization for Identify Mode LED glowing*/
+    TRISDbits.TRISD2 = 1;
+    TRISDbits.TRISD3 = 1;
+
+    TRISDbits.TRISD6 = 1;
+    TRISDbits.TRISD7 = 1;
+
+    //CNEN1bits.CN15IE = 1;
+    //CNEN2bits.CN16IE = 1;
+    CNPU1bits.CN15PUE = 1;
+    CNPU2bits.CN16PUE = 1;
+
+    //IFS1bits.CNIF = 0;
+    //IEC1bits.CNIE = 1;
+    #endif
+
+}
+
+void __attribute__((interrupt, auto_psv)) _AddressError ( void )
+{
+
+	printf("Address Trap Received\n\r");
+	
+	DelayMs(200);
+  Nop();
+  Nop();
+  Nop();
+  INTCON1bits.ADDRERR = 0;
+   #if !defined(__DEBUG)
+       Reset();
+   #endif
+}
+
+#elif defined (__C32__)
+
+void HardwareInit(void)
+{
+    INTEnableSystemMultiVectoredInt();  //Enable Multivectored interrupt
+
+    SPI1BRG = 0x00;
+    SPI1CON = 0x00008120;
+
+    SPI2BRG = 0x00;
+    SPI2CON = 0x00008120;
+
+    #ifdef USE_EXTERNAL_NVM
+        EEPROM_nCS      = 1;
+        EEPROM_nCS_TRIS = 0;
+        IFS1bits.SPI2RXIF = 1;
+    #endif
+
+    PHY_RESETn = 0;
+    PHY_RESETn_TRIS = 0;
+    PHY_CS = 1;
+    PHY_CS_TRIS = 0;
+    /*This intilization for Identify Mode LED glowing*/
+    TRISAbits.TRISA2 = 0;
+    TRISAbits.TRISA3 = 0;
+
+
+    TRISAbits.TRISA6 = 0;
+    TRISAbits.TRISA7 = 0;
+
+    IPC1bits.INT1IP = 0x06;
+    IPC1bits.INT1IS = 0x03;
+
+    RFIF = 0;
+    RFIE = 1;
+
+    if(RF_INT_PIN == 0)
+    {
+        RFIF = 1;
+    }
+    /*This intilization for Identify Mode LED glowing*/
+    TRISDbits.TRISD2 = 1;
+    TRISDbits.TRISD3 = 1;
+
+
+    TRISDbits.TRISD6 = 1;
+    TRISDbits.TRISD7 = 1;
+
+    CNENbits.CNEN15 = 1;
+    CNENbits.CNEN16 = 1;
+    CNPUEbits.CNPUE15 = 1;
+    CNPUEbits.CNPUE16 = 1;
+
+    IFS1bits.CNIF = 0;
+    //IEC1bits.CNIE = 1;
+}
+#else
+
+void HardwareInit(void)
+{
+
+    #ifdef USE_EXTERNAL_NVM
+        EEPROM_nCS          = 1;
+        EEPROM_nCS_TRIS     = 0;
+    #endif
+
+    #if defined(USE_EXTERNAL_NVM) && !defined(EE_AND_RF_SHARE_SPI)
+        RF_SPIInit();
+        EE_SPIInit();
+    #else
+        SPIInit();
+    #endif
+
+    #if (RF_CHIP == MRF24J40)
+        // Start with MRF24J40 disabled and not selected
+        PHY_CS              = 1;
+        PHY_RESETn          = 1;
+
+        // Set the directioning for the MRF24J40 pin connections.
+        PHY_CS_TRIS         = 0;
+        PHY_RESETn_TRIS     = 0;
+
+        // Initialize the interrupt.
+        INTCON2bits.INTEDG0 = 0;
+    #elif (RF_CHIP==UZ2400)
+        // Start with UZ2400 disabled and not selected
+        PHY_SEN             = 1;
+        PHY_RESETn          = 1;
+
+        // Set the directioning for the UZ2400 pin connections.
+        PHY_SEN_TRIS        = 0;
+        PHY_RESETn_TRIS     = 0;
+
+        // Initialize the interrupt.
+        INTCON2bits.INTEDG0 = 0;
+    #elif (RF_CHIP==CC2420)
+        // CC2420 I/O assignments with respect to PIC:
+        //NOTE: User must make sure that pin is capable of correct digital operation.
+        //      This may require modificaiton of which pins are digital and analog.
+        //NOTE: The stack requires that the SPI interface be located on LATC3 (SCK),
+        //      RC4 (SO), and LATC5 (SI).
+        //NOTE: The appropriate config bit must be set such that FIFOP is the CCP2
+        //      input pin. The stack uses the CCP2 interrupt.
+
+        // Start with CC2420 disabled and not selected
+        PHY_CSn             = 1;
+        PHY_VREG_EN         = 0;
+        PHY_RESETn          = 1;
+
+        // Set the directioning for the CC2420 pin connections.
+        PHY_FIFO_TRIS       = 1;    // FIFO      (Input)
+        PHY_SFD_TRIS        = 1;    // SFD       (Input - Generates interrupt on falling edge)
+        PHY_FIFOP_TRIS      = 1;    // FIFOP     (Input - Used to detect overflow, CCP2 interrupt)
+        PHY_CSn_TRIS        = 0;    // CSn       (Output - to select CC2420 SPI slave)
+        PHY_VREG_EN_TRIS    = 0;    // VREG_EN   (Output - to enable CC2420 voltage regulator)
+        PHY_RESETn_TRIS     = 0;    // RESETn    (Output - to reset CC2420)
+    #else
+        #error Unknown transceiver selected
+    #endif
+
+    #if defined(USE_EXTERNAL_NVM) && !defined(EE_AND_RF_SHARE_SPI)
+        // Initialize the SPI1 pins and directions
+        LATCbits.LATC3               = 0;    // SCK
+        LATCbits.LATC5               = 1;    // SDO
+        TRISCbits.TRISC3             = 0;    // SCK
+        TRISCbits.TRISC4             = 1;    // SDI
+        TRISCbits.TRISC5             = 0;    // SDO
+
+        // Initialize the SPI2 pins and directions
+        LATDbits.LATD6               = 0;    // SCK
+        LATDbits.LATD4               = 1;    // SDO
+        TRISDbits.TRISD6             = 0;    // SCK
+        TRISDbits.TRISD5             = 1;    // SDI
+        TRISDbits.TRISD4             = 0;    // SDO
+
+        RF_SSPSTAT_REG = 0x40;
+        RF_SSPCON1_REG = 0x21;
+        EE_SSPSTAT_REG = 0x40;
+        EE_SSPCON1_REG = 0x21;
+    #else
+        // Initialize the SPI pins and directions
+        LATCbits.LATC3               = 0;    // SCK
+        LATCbits.LATC5               = 1;    // SDO
+        TRISCbits.TRISC3             = 0;    // SCK
+        TRISCbits.TRISC4             = 1;    // SDI
+        TRISCbits.TRISC5             = 0;    // SDO
+
+        SSPSTAT_REG = 0x40;
+        SSPCON1_REG = 0x20;
+    #endif
+
+    //-------------------------------------------------------------------------
+    // This section is required for application-specific hardware
+    // initialization.
+    //-------------------------------------------------------------------------
+
+    #if defined (__18F4620)
+        // D1 and D2 are on RA0 and RA1 respectively, and CS of the TC77 is on RA2.
+        // Make PORTA digital I/O.
+        ADCON1 = 0x0F;
+
+        // Deselect the TC77 temperature sensor (RA2)
+        LATA = 0x04;
+
+        // Make RA0, RA1, RA2 and RA4 outputs.
+        TRISA = 0xE0;
+    #endif
+
+    // Clear the RBIF flag (INTCONbits.RBIF)
+    INTCONbits.RBIF = 0;
+
+    // Enable PORTB pull-ups (INTCON2bits.RBPU)
+    INTCON2bits.RBPU = 0;
+
+    // Make the PORTB switch connections inputs.
+    #if !defined(__18F4620)
+        TRISDbits.TRISD7 = 0;
+        TRISBbits.TRISB3 = 1;
+    #endif
+    TRISBbits.TRISB4 = 1;
+    TRISBbits.TRISB5 = 1;
+}
+
+#endif
