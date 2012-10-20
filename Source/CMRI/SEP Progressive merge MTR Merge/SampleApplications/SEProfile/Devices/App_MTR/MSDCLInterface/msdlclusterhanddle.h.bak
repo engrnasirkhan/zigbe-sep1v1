@@ -1,0 +1,263 @@
+
+
+//msdlclusterhanddle.h
+
+#include "zigbee.def"
+
+/*Generic Files*/
+#include "generic.h"
+#include "sralloc.h"
+#include "zNVM.h"
+#include "HAL.h"
+#include "Console.h"
+
+/*Stack Related Files*/
+#include "zAPL.h"
+#include "zAIL.h"
+#include "zAPS.h"
+#include "zSecurity.h"
+#include "zMAC.h"
+
+/*ZCL Related Files*/
+#include "ZCL_Interface.h"
+
+/*SE Related Files*/
+#include "SE_Interface.h"
+#include "SE_Profile.h"
+#include "SE_ESP.h"
+#include "SE_Display.h"
+
+/*Application Related Files*/
+#include "App_Common.h"
+#include "App_ESP.h"
+#include "Menu_ESP.h"
+
+#include "comm.h"
+#include "monitor.h"
+
+/*Libraries*/
+#if defined(__C30__)
+    #include "TLS2130.h"
+#else
+    #include "lcd PIC32.h"
+#endif
+
+#if I_SUPPORT_CBKE == 1
+    #include "eccapi.h"
+    #include "SE_CBKE.h"
+    #include "ZCL_Key_Establishment.h"
+#endif /*#if I_SUPPORT_CBKE*/
+
+
+#ifndef __MSDCL_CLUSTER_HANDLE
+#define __MSDCL_CLUSTER_HANDLE
+
+
+#define SEQ_METER_INFO						0x00
+		#define CMD_SERIAL_NUMBER			0x00
+		#define CMD_MAKE_CODE				0x01
+
+
+#define SEQ_COMU_ACTIVE_ENERGY				0x01
+		#define CMD_COMU_ACTIVE_ENERGY		0x00
+		#define CMD_COMU_ACTIVE_ENERGY_M1	0x01
+		#define CMD_COMU_ACTIVE_ENERGY_M2	0x02
+		#define CMD_COMU_ACTIVE_ENERGY_M3	0x03
+		#define CMD_COMU_ACTIVE_ENERGY_M4	0x04
+		#define CMD_COMU_ACTIVE_ENERGY_M5	0x05
+		#define CMD_COMU_ACTIVE_ENERGY_M6	0x06
+
+#define SEQ_MAX_DEMAND						0x02
+		#define CMD_MAX_DEMAND_CUR			0x00
+		#define CMD_MAX_DEMAND_CUR_TIME		0x01
+		#define CMD_MAX_DEMAND_M1			0x02
+		#define CMD_MAX_DEMAND_M1_TIME		0x03
+		#define CMD_MAX_DEMAND_M2			0x04
+		#define CMD_MAX_DEMAND_M2_TIME		0x05
+		#define CMD_MAX_DEMAND_M3			0x06
+		#define CMD_MAX_DEMAND_M3_TIME		0x07
+		#define CMD_MAX_DEMAND_M4			0x08
+		#define CMD_MAX_DEMAND_M4_TIME		0x09
+		#define CMD_MAX_DEMAND_M5			0x0a
+		#define CMD_MAX_DEMAND_M5_TIME		0x0b
+		#define CMD_MAX_DEMAND_M6			0x0c
+		#define CMD_MAX_DEMAND_M6_TIME		0x0d
+		
+#define SEQ_TAMPER_INFO						0x03
+		#define CMD_TAMPER_RP_RN_ST_1		0x00
+		#define CMD_TAMPER_RP_RN_SP_1		0x10
+		#define CMD_TAMPER_RP_RN_ST_2		0x01
+		#define CMD_TAMPER_RP_RN_SP_2		0x11
+		#define CMD_TAMPER_RP_RN_ST_3		0x02
+		#define CMD_TAMPER_RP_RN_SP_3		0x12
+		#define CMD_TAMPER_RP_RN_ST_4		0x03
+		#define CMD_TAMPER_RP_RN_SP_4		0x13
+		#define CMD_TAMPER_RP_RN_ST_5		0x04
+		#define CMD_TAMPER_RP_RN_SP_5		0x14
+		#define CMD_TAMPER_RP_RN_ST_6		0x05
+		#define CMD_TAMPER_RP_RN_SP_6		0x15
+		#define CMD_TAMPER_RP_RN_ST_7		0x06
+		#define CMD_TAMPER_RP_RN_SP_7		0x16
+		#define CMD_TAMPER_RP_RN_ST_8		0x07
+		#define CMD_TAMPER_RP_RN_SP_8		0x17
+		#define CMD_TAMPER_RP_RN_ST_9		0x08
+		#define CMD_TAMPER_RP_RN_SP_9		0x18
+		#define CMD_TAMPER_RP_RN_ST_10		0x09
+		#define CMD_TAMPER_RP_RN_SP_10		0x19
+		#define CMD_TAMPER_LE_ST_1			0x20
+		#define CMD_TAMPER_LE_SP_1			0x30
+		#define CMD_TAMPER_LE_ST_2			0x21
+		#define CMD_TAMPER_LE_SP_2			0x31
+		#define CMD_TAMPER_LE_ST_3			0x22
+		#define CMD_TAMPER_LE_SP_3			0x32
+		#define CMD_TAMPER_LE_ST_4			0x23
+		#define CMD_TAMPER_LE_SP_4			0x33
+		#define CMD_TAMPER_LE_ST_5			0x24
+		#define CMD_TAMPER_LE_SP_5			0x34
+		#define CMD_TAMPER_LE_ST_6			0x25
+		#define CMD_TAMPER_LE_SP_6			0x35
+		#define CMD_TAMPER_LE_ST_7			0x26
+		#define CMD_TAMPER_LE_SP_7			0x36
+		#define CMD_TAMPER_LE_ST_8			0x27
+		#define CMD_TAMPER_LE_SP_8			0x37
+		#define CMD_TAMPER_LE_ST_9			0x28
+		#define CMD_TAMPER_LE_SP_9			0x38
+		#define CMD_TAMPER_LE_ST_10			0x29
+		#define CMD_TAMPER_LE_SP_10			0x39
+		#define CMD_TAMPER_ND_ST_1			0x40
+		#define CMD_TAMPER_ND_SP_1			0x50
+		#define CMD_TAMPER_ND_ST_2			0x41
+		#define CMD_TAMPER_ND_SP_2			0x51
+		#define CMD_TAMPER_ND_ST_3			0x42
+		#define CMD_TAMPER_ND_SP_3			0x52
+		#define CMD_TAMPER_ND_ST_4			0x43
+		#define CMD_TAMPER_ND_SP_4			0x53
+		#define CMD_TAMPER_ND_ST_5			0x44
+		#define CMD_TAMPER_ND_SP_5			0x54
+		#define CMD_TAMPER_ND_ST_6			0x45
+		#define CMD_TAMPER_ND_SP_6			0x55
+		#define CMD_TAMPER_ND_ST_7			0x46
+		#define CMD_TAMPER_ND_SP_7			0x56
+		#define CMD_TAMPER_ND_ST_8			0x47
+		#define CMD_TAMPER_ND_SP_8			0x57
+		#define CMD_TAMPER_ND_ST_9			0x48
+		#define CMD_TAMPER_ND_SP_9			0x58
+		#define CMD_TAMPER_ND_ST_10			0x49
+		#define CMD_TAMPER_ND_SP_10			0x59
+		#define CMD_TAMPER_MT_ST_1			0x60
+		#define CMD_TAMPER_MT_SP_1			0x70
+		#define CMD_TAMPER_MT_ST_2			0x61
+		#define CMD_TAMPER_MT_SP_2			0x71
+		#define CMD_TAMPER_MT_ST_3			0x62
+		#define CMD_TAMPER_MT_SP_3			0x72
+		#define CMD_TAMPER_MT_ST_4			0x63
+		#define CMD_TAMPER_MT_SP_4			0x73
+		#define CMD_TAMPER_MT_ST_5			0x64
+		#define CMD_TAMPER_MT_SP_5			0x74
+		#define CMD_TAMPER_MT_ST_6			0x65
+		#define CMD_TAMPER_MT_SP_6			0x75
+		#define CMD_TAMPER_MT_ST_7			0x66
+		#define CMD_TAMPER_MT_SP_7			0x76
+		#define CMD_TAMPER_MT_ST_8			0x67
+		#define CMD_TAMPER_MT_SP_8			0x77
+		#define CMD_TAMPER_MT_ST_9			0x68
+		#define CMD_TAMPER_MT_SP_9			0x78
+		#define CMD_TAMPER_MT_ST_10			0x69
+		#define CMD_TAMPER_MT_SP_10			0x79
+		#define CMD_TAMPER_CO				0x80
+
+
+
+struct DeviceConnectedInfo
+{
+	LONG_ADDR                   longAddr;
+    SHORT_ADDR                  shortAddr;
+    PAN_ADDR                    panID;
+
+};
+
+extern unsigned int NumberOfDevicesConnected;
+extern struct DeviceConnectedInfo CurrentDeviceConnectedInfo[28];
+
+struct MSDLValue
+{
+	char Serial_Number[9];
+	char Make_Code[6];
+	unsigned char Comu_Active_Energy[6];
+	unsigned char Comu_Active_Energy_M1[6];
+	unsigned char  Comu_Active_Energy_M2[6];
+	unsigned char Comu_Active_Energy_M3[6];
+	unsigned char Comu_Active_Energy_M4[6];
+	unsigned char Comu_Active_Energy_M5[6];
+	unsigned char Comu_Active_Energy_M6[6];
+	unsigned char Max_Demand_Cur[6];
+	unsigned char Max_Demand_Cur_TIME[7];
+	unsigned char Max_Demand_Cur_M1[6];
+	unsigned char Max_Demand_Cur_M1_TIME[7];
+	unsigned char Max_Demand_Cur_M2[6];
+	unsigned char Max_Demand_Cur_M2_TIME[7];
+	unsigned char Max_Demand_Cur_M3[6];
+	unsigned char Max_Demand_Cur_M3_TIME[7];
+	unsigned char Max_Demand_Cur_M4[6];
+	unsigned char Max_Demand_Cur_M4_TIME[7];
+	unsigned char Max_Demand_Cur_M5[6];
+	unsigned char Max_Demand_Cur_M5_TIME[7];
+	unsigned char Max_Demand_Cur_M6[6];
+	unsigned char Max_Demand_Cur_M6_TIME[7];
+	unsigned char Tamper_RP_RN_ST[11][7];
+	unsigned char Tamper_RP_RN_SP[11][7];
+	unsigned char Tamper_LE_ST[11][7];
+	unsigned char Tamper_LE_SP[11][7];
+	unsigned char Tamper_ND_ST[11][7];
+	unsigned char Tamper_ND_SP[11][7];
+	unsigned char Tamper_MT_ST[11][7];
+	unsigned char Tamper_MT_SP[11][7];
+	unsigned char Tamper_CO[11][7];
+};
+
+struct __EndDeviceAnounceAddress
+{	
+	SHORT_ADDR 	shortaddress;
+	LONG_ADDR	longaddress;
+};
+
+struct __EndDeviceAnounceTable
+{	
+	struct __EndDeviceAnounceAddress  EndDevAddr[31];
+	int Counter;
+};
+
+#define ACK_PENDING 	0x00
+#define ACK_NOTRECEIVED 0x01
+#define ACK_RECEIVED	0x02
+
+struct __MyCommandFlag
+{
+	unsigned char ACK;
+	unsigned char DataSent;
+};
+
+
+extern struct __MyCommandFlag MyCommandFlag;
+extern struct MSDLValue MTRActualValues;
+extern struct __EndDeviceAnounceTable	EndDeviceAnounceTable;
+
+void HanddleMSDLClusterParameters(APP_DATA_indication* p_dataInd);
+void HanddleUART2Request(int Seq,int Cmd,unsigned char RW,APP_DATA_indication* p_dataInd);
+void HanddleUART2(void);
+SHORT_ADDR FindShortAddressFromMtrSerial(LONG_ADDR MtrSerial);
+LONG_ADDR FindMeterSerialNumberFromShortAddr(SHORT_ADDR  ShortAddr);
+void PutMtrSerialNumberAtShortAddr(SHORT_ADDR ShortAddr,LONG_ADDR MtrSerial);
+void CheckDataAndSend(void);
+
+void SendExtPANIdResponse(void);
+void SendModuleStartData(void);
+void SendModuleNetworkSetCommandResponse( const unsigned char* responseCommand, unsigned char dataSize );
+void AddEndDeviceAnnceDevice(SHORT_ADDR shortaddr,LONG_ADDR longaddr);
+void AddNWKAddrReq(SHORT_ADDR shortaddr,LONG_ADDR longaddr);
+int EndDeviceLookupNodeByLongAddr( LONG_ADDR *longAddr );
+#endif
+
+
+
+

@@ -1,0 +1,28 @@
+build/default/debug/_ext/1082410023/ZigbeeTasks.o:  \
+ ../../../../../Source/ZigBeeStack/ZigbeeTasks.c  \
+ ../../../../../Source/Common/Compiler.h  \
+ ../../../../../Source/Common/generic.h  \
+ ../../../../../Source/Common/Compiler.h  \
+../zigbee.def  \
+../merge_info.h  \
+ ../../../../../Source/ZigBeeStack/zTest.h  \
+ ../../../../../Source/ZigBeeStack//zStack_Profile.h  \
+ ../../../../../Source/ZigBeeStack//zStack_Configuration.h  \
+ ../../../../../Source/ZigBeeStack/ZigbeeTasks.h  \
+ ../../../../../Source/ZigBeeStack/zigbee.h  \
+ ../../../../../Source/ZigBeeStack/SymbolTime.h  \
+ ../../../../../Source/ZigBeeStack/zNVM.h  \
+ ../../../../../Source/ZigBeeStack/zNWK.h  \
+ ../../../../../Source/ZigBeeStack/zAPS.h  \
+ ../../../../../Source/ZigBeeStack/zZDO.h  \
+ ../../../../../Source/Common/compiler.h  \
+ ../../../../../Source/ZigBeeStack/zPHY.h  \
+ ../../../../../Source/ZigBeeStack/zPHY_MRF24J40.h  \
+ ../../../../../Source/ZigBeeStack/zMAC.h  \
+ ../../../../../Source/ZigBeeStack/zMAC_MRF24J40.h  \
+ ../../../../../Source/ZigBeeStack/zAIL.h  \
+ ../../../../../Source/Common/MSPI.h  \
+ ../../../../../Source/Common/generic.h  \
+ ../../../../../Source/Common/sralloc.h  \
+ ../../../../../Source/Common/console.h  \
+ ../../../../../Source/ZigBeeStack/zStub_APS.h 
