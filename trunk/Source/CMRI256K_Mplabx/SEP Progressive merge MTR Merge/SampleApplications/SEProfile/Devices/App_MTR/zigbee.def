@@ -1,0 +1,521 @@
+// *****************************************************************************
+//
+//  Software License Agreement
+//
+//  Copyright (c) 2004-2007 Microchip Technology Inc.
+//  All rights reserved.
+//
+//  Microchip licenses to you the right to use, copy and distribute Software
+//  only when embedded on a Microchip microcontroller or digital signal
+//  controller and used with a Microchip radio frequency transceiver, which
+//  are integrated into your product or third party product (pursuant to the
+//  sublicense terms in the accompanying license agreement).  You may NOT
+//  modify or create derivative works of the Software.
+//
+//  If you intend to use this Software in the development of a product for
+//  sale, you must be a member of the ZigBee Alliance.  For more
+//  information, go to www.zigbee.org.
+//
+//  You should refer to the license agreement accompanying this Software for
+//  additional information regarding your rights and obligations.
+//
+//  SOFTWARE AND DOCUMENTATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+//  KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION, ANY
+//  WARRANTY OF MERCHANTABILITY, TITLE, NON-INFRINGEMENT AND FITNESS FOR A
+//  PARTICULAR PURPOSE. IN NO EVENT SHALL MICROCHIP OR ITS LICENSORS BE
+//  LIABLE OR OBLIGATED UNDER CONTRACT, NEGLIGENCE, STRICT LIABILITY,
+//  CONTRIBUTION, BREACH OF WARRANTY, OR OTHER LEGAL EQUITABLE THEORY ANY
+//  DIRECT OR INDIRECT DAMAGES OR EXPENSES INCLUDING BUT NOT LIMITED TO ANY
+//  INCIDENTAL, SPECIAL, INDIRECT, PUNITIVE OR CONSEQUENTIAL DAMAGES, LOST
+//  PROFITS OR LOST DATA, COST OF PROCUREMENT OF SUBSTITUTE GOODS,
+//  TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES (INCLUDING BUT NOT
+//  LIMITED TO ANY DEFENSE THEREOF), OR OTHER SIMILAR COSTS.
+//
+//  1/31/07
+//
+// *****************************************************************************
+
+// Created by ZENA(TM) Version 2.99.9.0, 4/30/2008, 9:08:46
+
+// This definition file was created for use with the following:
+//     Protocol:            ZigBee 2006
+//     Processor:           PIC24/dsPIC
+//     Transceiver:         Microchip MRF24J40
+//     ZigBee Device:       Router
+//     Nonvolatile Storage: 25LC256
+
+// ***** Any changes should be made by regenerating the file with ZENA(TM) *****
+
+#ifndef _ZIGBEE_DEF
+#define _ZIGBEE_DEF
+
+#include "merge_info.h"
+
+
+// Manual Additions
+//#define ZCP_DEBUG
+//#define ZCP_PRINTOUT
+//#define DEBUG_LOG
+//**************************
+
+//*******************************************************************
+// PIC Information
+//*******************************************************************
+#ifdef __PIC32MX__
+    #define CLOCK_FREQ                                  64000000
+#else
+    #define CLOCK_FREQ                                  8000000ul
+#endif
+#define BAUD_RATE                                       19200ul
+#define MAX_HEAP_SIZE                                   2048
+
+//*******************************************************************
+// SPI and Non-volatile Storage Information
+//*******************************************************************
+#define USE_EXTERNAL_NVM
+#define EXTERNAL_NVM_BYTES                              32768
+#define EEPROM_PAGE_SIZE                                64
+#define STORE_MAC_EXTERNAL
+
+#if defined (__PIC24FJ256GB110__)
+    /* Note: RD12 Remapped to RG0 on
+        PIC24FJ256GB110 PIM */
+
+    #define EEPROM_nCS_TRIS                             TRISGbits.TRISG0
+    #define EEPROM_nCS                                  LATGbits.LATG0
+    #define EEPROM_SCK_TRIS                             TRISGbits.TRISG6
+    #define EEPROM_SDO_TRIS                             TRISGbits.TRISG8
+    #define EEPROM_SDI_TRIS                             TRISGbits.TRISG7
+    
+#elif defined (__PIC24FJ256GB106__)
+    /* Note: RD12 Remapped to RG0 on
+        PIC24FJ256GB106 PIM */
+
+    #define EEPROM_nHOLD_TRIS                           TRISDbits.TRISD5
+    #define EEPROM_nHOLD                                LATDbits.LATD5        
+    #define EEPROM_nWP_TRIS                             TRISDbits.TRISD4
+    #define EEPROM_nWP                                  LATDbits.LATD4
+    #define EEPROM_nCS_TRIS                             TRISDbits.TRISD3
+    #define EEPROM_nCS                                  LATDbits.LATD3
+    #define EEPROM_SCK_TRIS                             TRISDbits.TRISD10
+    #define EEPROM_SDO_TRIS                             TRISDbits.TRISD9
+    #define EEPROM_SDI_TRIS                             TRISDbits.TRISD2
+    
+#else
+    #define EEPROM_nCS                                  LATDbits.LATD12
+    #define EEPROM_nCS_TRIS                             TRISDbits.TRISD12
+#endif
+
+//*******************************************************************
+// RF is on SPI1, EE is on SPI2
+//*******************************************************************
+#define RF_SSPIF_BIT                                    IFS0bits.SPI1IF
+#define RF_SSPBUF_REG                                   SPI1BUF
+#define EE_SSPIF_BIT                                    IFS2bits.SPI2IF
+#define EE_SSPBUF_REG                                   SPI2BUF
+
+//*******************************************************************
+// Transceiver Information
+//*******************************************************************
+#define RF_CHIP                                         MRF24J40
+#define MAC_PIB_macAckWaitDuration                      (54+3)
+
+#if defined (__PIC24FJ256GB106__)
+#define RF_INT_PIN                                      PORTDbits.RD0
+#else
+#define RF_INT_PIN                                      PORTEbits.RE8
+#endif
+
+#if defined (PIC32_460) || defined(PIC32_795)
+    #define PHY_CS                                      LATDbits.LATD9
+    #define PHY_CS_TRIS                                 TRISDbits.TRISD9
+    #define PHY_RESETn                                  LATAbits.LATA14
+    #define PHY_RESETn_TRIS                             TRISAbits.TRISA14
+    #define PHY_WAKE                                    LATAbits.LATA15
+    #define PHY_WAKE_TRIS                               TRISAbits.TRISA15
+#else
+    #if defined (__PIC24FJ256GB110__)
+        #define PHY_CS                                  LATBbits.LATB2
+        #define PHY_CS_TRIS                             TRISBbits.TRISB2
+        #define PHY_RESETn                              LATAbits.LATA14
+        #define PHY_RESETn_TRIS                         TRISAbits.TRISA14
+        #define PHY_WAKE                                LATAbits.LATA15
+        #define PHY_WAKE_TRIS                           TRISAbits.TRISA15
+    #elif defined (__PIC24FJ256GB106__)
+        #define PHY_CS                                  LATEbits.LATE7
+        #define PHY_CS_TRIS                             TRISEbits.TRISE7
+        #define PHY_RESETn                              LATEbits.LATE6
+        #define PHY_RESETn_TRIS                         TRISEbits.TRISE6
+        #define PHY_WAKE                                LATEbits.LATE5
+        #define PHY_WAKE_TRIS                           TRISEbits.TRISE5
+    #else
+        #define PHY_CS                                  LATBbits.LATB2
+        #define PHY_CS_TRIS                             TRISBbits.TRISB2
+        #define PHY_RESETn                              LATGbits.LATG2
+        #define PHY_RESETn_TRIS                         TRISGbits.TRISG2
+        #define PHY_WAKE                                LATGbits.LATG3
+        #define PHY_WAKE_TRIS                           TRISGbits.TRISG3
+    #endif
+#endif
+
+#define PA_LEVEL                                        0x00  // -0.00 dBm
+#define FREQUENCY_BAND                                  FB_2400GHz
+
+/* Do not enable this while using the MRF24J40MA 
+ * transceiver.  IT WILL DAMAGE THE DEVICE.
+ * Use only with the MRF24J40MB/MC devices
+*/
+#define USE_EXT_PA_LNA
+//#define RADIO_IS_MRF24J40MC
+#define RADIO_IS_MRF24J40MB
+
+//*******************************************************************
+// Device MAC Address
+//*******************************************************************
+#define MAC_LONG_ADDR_BYTE7                             0x4d
+#define MAC_LONG_ADDR_BYTE6                             0x43
+#define MAC_LONG_ADDR_BYTE5                             0x48
+#define MAC_LONG_ADDR_BYTE4                             0x49
+#define MAC_LONG_ADDR_BYTE3                             0x50
+#define MAC_LONG_ADDR_BYTE2                             0x03
+#define MAC_LONG_ADDR_BYTE1                             0x02
+#define MAC_LONG_ADDR_BYTE0                             0x02
+
+//*******************************************************************
+// ZigBee Device Information
+//*******************************************************************
+#define I_AM_ROUTER
+//#define I_AM_COORDINATOR
+#define I_AM_FFD
+//#define I_AM_RFD
+#define I_SUPPORT_ROUTING
+#define MY_CAPABILITY_INFO                              0x8E
+#define DEFAULTINSECUREJOIN                             TRUE
+#define DEFAULT_ASSOC_PERMIT                            0x01
+
+#define NWK_SCAN_DURTION								9
+
+//#define RFD_POLL_RATE 05 /*TODO change to meaningful value, value is only to get RFD compiling*/
+//*******************************************************************
+// ZigBee Features Supported
+//*******************************************************************
+#define ZIGBEE_2007 0x00
+#if ( ZIGBEE_2007 == 0x01)
+        #define I_SUPPORT_COMMISSIONING
+//      #define I_SUPPORT_ADVANCED_COMMISSIONING
+        #define USE_TREE_ROUTING                        1
+        #define I_SUPPORT_CONCENTRATOR                  0
+        #define I_SUPPORT_MANY_TO_ONE_HANDLING          0
+        #define I_SUPPORT_SYMMETRIC_LINK                0
+        #define I_SUPPORT_ROUTING_TABLE_AGING           0
+        #define I_SUPPORT_LINK_KEY                      1
+        #define I_SUPPORT_FREQUENCY_AGILITY             0
+        #define I_SUPPORT_FREQUENCY_AGILITY_TESTING     0
+        #define APP_RESOLVE_FREQUENCY_AGILITY           0
+        #define I_SUPPORT_PANID_CONFLICT                1
+#endif
+
+#define ZIGBEE_PRO 0x01
+#if ( ZIGBEE_PRO == 0x01)
+        #define I_SUPPORT_COMMISSIONING
+//      #define I_SUPPORT_ADVANCED_COMMISSIONING
+        #define I_SUPPORT_STOCHASTIC_ADDRESSING         1
+        #define USE_TREE_ROUTING                        0
+        #define I_SUPPORT_CONCENTRATOR                  1
+        #define I_SUPPORT_MANY_TO_ONE_HANDLING          1
+        #define I_SUPPORT_SOURCE_ROUTE_TESTING          0
+        #define I_SUPPORT_SYMMETRIC_LINK                1
+        #define I_SUPPORT_ROUTING_TABLE_AGING           1
+        #define I_SUPPORT_FRAGMENTATION                 1
+        #define I_SUPPORT_FRAGMENTATION_TESTING         0
+        #define I_SUPPORT_FREQUENCY_AGILITY             1
+        #define I_SUPPORT_FREQUENCY_AGILITY_TESTING     0
+        #define APP_RESOLVE_FREQUENCY_AGILITY           0
+        #define I_SUPPORT_PANID_CONFLICT                1
+        #define I_SUPPORT_LINK_KEY                      1
+        #define I_SUPPORT_LINK_STATUS_COMMANDS          1
+        #define I_SUPPORT_LINK_STATUS_COMMAND_TESTING   0
+        #define I_SUPPORT_NWK_LAYER_MULTICAST           1
+        #define I_SUPPORT_STUB_APS                      1
+#endif
+#if I_SUPPORT_CONCENTRATOR ==   1
+        #define I_AM_HIGH_CONCENTRATOR                  0 // Non configurable
+        #define I_AM_LOW_CONCENTRATOR                   1 // Non configurable
+        #define MAX_ROUTE_RECORD_TABLE_SIZE             60
+        #define CONCENTRATOR_TYPE                       I_AM_LOW_CONCENTRATOR
+
+#endif
+#if I_SUPPORT_LINK_KEY == 1
+        #define I_SUPPORT_PRECONFIGURED_TC_LINK_KEY     1
+//        #define USE_COMMON_TC_LINK_KEY                  0
+        /*
+        if I_SUPPORT_MULTIPLE_TC_LINK_KEY = 1, Trust Center is configured with different TC Link Keys per device
+        if I_SUPPORT_MULTIPLE_TC_LINK_KEY = 0, Trust Center is configured with one TC Link Key common across the network
+        */
+        #define MAX_APPLICATION_LINK_KEY_SUPPORTED      8
+        #define TIME_TO_WAIT_FOR_APP_LINK_KEY_REQUEST   10 // In Seconds
+        #define MAX_TC_LINK_KEY_SUPPORTED               8
+#endif
+
+
+//*******************************************************************
+// ZDO Configuration
+//*******************************************************************
+#define SUPPORT_END_DEVICE_BINDING						
+#define CONFIG_ENDDEV_BIND_TIMEOUT                      (ONE_SECOND * 60)
+#define MAX_SAS_TABLE_SIZE                              2
+
+//*******************************************************************
+// APS Configuration
+//*******************************************************************
+#define MAX_APL_FRAMES                                  14
+#define MAX_APS_ACK_FRAMES                              14
+#define MAX_APS_ADDRESSES                               6
+#define I_SUPPORT_BINDINGS
+#define MAX_BINDINGS                                    100
+#define NUM_BUFFERED_INDIRECT_MESSAGES                  8
+#define MAX_DUPLICATE_TABLE                             32
+#define DUPLICATE_TABLE_EXPIRATION                      5
+
+#if (I_SUPPORT_NWK_LAYER_MULTICAST == 1)
+	// If NWK Layer Multicast is supported, then it is mandatory to support Group Addressing
+	#define I_SUPPORT_GROUP_ADDRESSING
+#else
+	// Otherwise it is optional. Comment next line if Group Addressing is not required.
+	#define I_SUPPORT_GROUP_ADDRESSING
+#endif
+
+#define MAX_GROUP                                       8
+#define MAX_GROUP_END_POINT                             8
+#define MAX_GROUP_RECORD_BUFFER                         5
+
+#if (I_SUPPORT_FRAGMENTATION == 1)
+#if defined(__PIC32MX__)
+    #define MAX_FRAGMENTATION_SIZE 0x0400
+#else
+    #define MAX_FRAGMENTATION_SIZE 0x0400
+#endif
+#endif //#if (I_SUPPORT_FRAGMENTATION == 1)
+//*******************************************************************
+// NWK Configuration
+//*******************************************************************
+#define MAX_NEIGHBORS 					50
+#define NUM_BUFFERED_BROADCAST_MESSAGES                 5
+#define ROUTE_DISCOVERY_TABLE_SIZE                      4
+#define ROUTING_TABLE_SIZE                              50
+#define RESERVED_ROUTING_TABLE_ENTRIES                  8
+#define NUM_BUFFERED_ROUTING_MESSAGES                   4
+
+#define NWK_SHORT_ADDRESS                               0x0000
+
+#define NWK_EXTENDED_PAN_ID_BYTE7                       0x00
+#define NWK_EXTENDED_PAN_ID_BYTE6                       0x50
+#define NWK_EXTENDED_PAN_ID_BYTE5                       0xC2
+#define NWK_EXTENDED_PAN_ID_BYTE4                       0x77
+#define NWK_EXTENDED_PAN_ID_BYTE3                       0x10
+#define NWK_EXTENDED_PAN_ID_BYTE2                       0x00
+#define NWK_EXTENDED_PAN_ID_BYTE1                       0x00
+#define NWK_EXTENDED_PAN_ID_BYTE0                       0x00
+
+#define NWK_STACK_PROFILE                               0x00
+
+//*******************************************************************
+// MAC Configuration
+//*******************************************************************
+#define MINIMUM_JOIN_LQI                                48
+#define MAC_PIB_macTransactionPersistenceTime           479999    // 7.68 seconds
+#define RX_BUFFER_SIZE                                  256
+#define RX_BUFFER_LOCATION                              0x400
+#define MAC_PIB_macBeaconOrder                          15
+#define MAC_PIB_macSuperframeOrder                      15
+#define MAC_PIB_macBattLifeExt                          FALSE
+#define MAC_DEFAULT_PANID                               0xB8DF
+
+//*******************************************************************
+// Security Configuration
+//*******************************************************************
+#define I_SUPPORT_RES_SECURITY
+#define SECURITY_COUNTER_LOCATION                       0xa00
+//#define I_AM_TRUST_CENTER
+
+//*******************************************************************
+// Trust Center Address
+//*******************************************************************
+#define TRUST_CENTER_LONG_ADDR_BYTE7                    0x4d
+#define TRUST_CENTER_LONG_ADDR_BYTE6                    0x43
+#define TRUST_CENTER_LONG_ADDR_BYTE5                    0x48
+#define TRUST_CENTER_LONG_ADDR_BYTE4                    0x49
+#define TRUST_CENTER_LONG_ADDR_BYTE3                    0x50
+#define TRUST_CENTER_LONG_ADDR_BYTE2                    0x03
+#define TRUST_CENTER_LONG_ADDR_BYTE1                    0x02
+#define TRUST_CENTER_LONG_ADDR_BYTE0                    0x01
+
+//*******************************************************************
+// Trust Center Master Key
+//*******************************************************************
+#define TRUST_CENTER_MASTER_KEY15                       0x00
+#define TRUST_CENTER_MASTER_KEY14                       0x00
+#define TRUST_CENTER_MASTER_KEY13                       0x00
+#define TRUST_CENTER_MASTER_KEY12                       0x00
+#define TRUST_CENTER_MASTER_KEY11                       0x00
+#define TRUST_CENTER_MASTER_KEY10                       0x00
+#define TRUST_CENTER_MASTER_KEY9                        0x00
+#define TRUST_CENTER_MASTER_KEY8                        0x00
+#define TRUST_CENTER_MASTER_KEY7                        0x00
+#define TRUST_CENTER_MASTER_KEY6                        0x00
+#define TRUST_CENTER_MASTER_KEY5                        0x00
+#define TRUST_CENTER_MASTER_KEY4                        0x00
+#define TRUST_CENTER_MASTER_KEY3                        0x00
+#define TRUST_CENTER_MASTER_KEY2                        0x00
+#define TRUST_CENTER_MASTER_KEY1                        0x00
+#define TRUST_CENTER_MASTER_KEY0                        0x00
+
+//*******************************************************************
+// Network Key(1)
+//*******************************************************************
+#define NETWORK_KEY_BYTE15                              0xBD
+#define NETWORK_KEY_BYTE14                              0x39
+#define NETWORK_KEY_BYTE13                              0x84
+#define NETWORK_KEY_BYTE12                              0x12
+#define NETWORK_KEY_BYTE11                              0xE5
+#define NETWORK_KEY_BYTE10                              0x17
+#define NETWORK_KEY_BYTE09                              0x3B
+#define NETWORK_KEY_BYTE08                              0x82
+#define NETWORK_KEY_BYTE07                              0x9D
+#define NETWORK_KEY_BYTE06                              0x49
+#define NETWORK_KEY_BYTE05                              0x33
+#define NETWORK_KEY_BYTE04                              0x85
+#define NETWORK_KEY_BYTE03                              0x3D
+#define NETWORK_KEY_BYTE02                              0x23
+#define NETWORK_KEY_BYTE01                              0x48
+#define NETWORK_KEY_BYTE00                              0x59
+
+#define NETWORK_KEY_SEQ                                 0x00
+
+//*******************************************************************
+// Network Key(2)
+//*******************************************************************
+#define NETWORK_KEY1_BYTE15                              0x28
+#define NETWORK_KEY1_BYTE14                              0x9F
+#define NETWORK_KEY1_BYTE13                              0x8B
+#define NETWORK_KEY1_BYTE12                              0xC4
+#define NETWORK_KEY1_BYTE11                              0x84
+#define NETWORK_KEY1_BYTE10                              0x62
+#define NETWORK_KEY1_BYTE09                              0x12
+#define NETWORK_KEY1_BYTE08                              0xB8
+#define NETWORK_KEY1_BYTE07                              0xB9
+#define NETWORK_KEY1_BYTE06                              0x4E
+#define NETWORK_KEY1_BYTE05                              0x37
+#define NETWORK_KEY1_BYTE04                              0x4E
+#define NETWORK_KEY1_BYTE03                              0x89
+#define NETWORK_KEY1_BYTE02                              0x75
+#define NETWORK_KEY1_BYTE01                              0x89
+#define NETWORK_KEY1_BYTE00                              0x5A
+
+#define NETWORK_KEY_SEQ1                                0x01
+
+//#define PRECONFIG_NWK_KEY
+//*******************************************************************
+// Pre Configured Link Key
+//*******************************************************************
+
+#define PRECONFIGURED_LINK_KEY15                        0x4C
+#define PRECONFIGURED_LINK_KEY14                        0x43
+#define PRECONFIGURED_LINK_KEY13                        0x44
+#define PRECONFIGURED_LINK_KEY12                        0x45
+#define PRECONFIGURED_LINK_KEY11                        0x53
+#define PRECONFIGURED_LINK_KEY10                        0x4D
+#define PRECONFIGURED_LINK_KEY09                        0x00
+#define PRECONFIGURED_LINK_KEY08                        0x00
+#define PRECONFIGURED_LINK_KEY07                        0x00
+#define PRECONFIGURED_LINK_KEY06                        0x00
+#define PRECONFIGURED_LINK_KEY05                        0x00
+#define PRECONFIGURED_LINK_KEY04                        0x00
+#define PRECONFIGURED_LINK_KEY03                        0x00
+#define PRECONFIGURED_LINK_KEY02                        0x00
+#define PRECONFIGURED_LINK_KEY01                        0x00
+#define PRECONFIGURED_LINK_KEY00                        0x00
+
+//*******************************************************************
+// Default Key
+//*******************************************************************
+#define NVM_KEY_BYTE15                                  0x00
+#define NVM_KEY_BYTE14                                  0x00
+#define NVM_KEY_BYTE13                                  0x00
+#define NVM_KEY_BYTE12                                  0x00
+#define NVM_KEY_BYTE11                                  0x00
+#define NVM_KEY_BYTE10                                  0x00
+#define NVM_KEY_BYTE09                                  0x00
+#define NVM_KEY_BYTE08                                  0x00
+#define NVM_KEY_BYTE07                                  0x00
+#define NVM_KEY_BYTE06                                  0x00
+#define NVM_KEY_BYTE05                                  0x00
+#define NVM_KEY_BYTE04                                  0x00
+#define NVM_KEY_BYTE03                                  0x00
+#define NVM_KEY_BYTE02                                  0x00
+#define NVM_KEY_BYTE01                                  0x00
+#define NVM_KEY_BYTE00                                  0x00
+
+//*******************************************************************
+// Default Startup values(SAS)
+//*******************************************************************
+#define DEFAULT_NWK_KEY_TYPE                            0x05
+#define DEFAULT_NWK_MGR_ADDR                            0x0000
+#define DEFAULT_SCAN_ATTEMPS                            0x15
+#define DEFAULT_TIME_BETWEEN_SCANS                      0x6400
+#define DEFAULT_REJOIN_INTERVAL                         0x6400
+#define DEFAULT_MAX_REJOIN_INTERVAL                     0x0e10
+#define DEFAULT_INDIRECT_POLL_RATE                      0xFF00
+#define DEFAULT_PARENT_RETRY_THRESHOLD                  0xFF
+#define DEFAULT_STARTUP_CONTROL_ESP                     0x01
+#define DEFAULT_STARTUP_CONTROL_MTR                     0x03
+#define DEFAULT_CONC_RADIUS                             0x0F
+#define DEFAULT_CONC_DISC_TIME                     		0x00
+
+//*******************************************************************
+// SE Profile Information
+//*******************************************************************
+#define NUM_USER_ENDPOINTS                              1
+#define MY_MAX_INPUT_CLUSTERS                           15
+#define MY_MAX_OUTPUT_CLUSTERS                          15
+#include "..\..\Source\ZigBeeStack\zTest.h"
+
+#define I_AM_ESP                                        0x01
+#define I_AM_MTR                                        0x01
+
+#define I_SUPPORT_OPTIONAL_ZCL_ATTRIBUTES               0x01
+
+#define APP_USE_EXTERNAL_NVM							0x00
+
+// Reporting is a feature where the Server device notify the Client device
+// about the change in value of the Reportable Attributes
+#define I_SUPPORT_REPORTING                             0x01
+#define I_SUPPORT_SCENES								0x01
+
+// This feature is used to derive the Application Link Key using CBKE
+// procedure after joining the network.
+#define I_SUPPORT_CBKE                                  0x00
+
+#if (I_SUPPORT_CBKE == 0x01)
+    #define I_SUPPORT_MULTIPLE_TC_LINK_KEY              0x01
+#else
+    #define I_SUPPORT_MULTIPLE_TC_LINK_KEY              0x00
+#endif
+
+//Macro that specifies the time interval between each nvm store
+#define NVM_STORE_INTERVAL ( ONE_SECOND * 60 )
+
+// Macro that specifies the maximum number of packets that are sent 
+// between each NVM stores
+#define MAX_PACKETS_BTWN_NVM_STORE ( 0x0400 )
+
+/* check for macro consistencies */
+#if defined(USE_EXT_PA_LNA) && !defined(RADIO_IS_MRF24J40MB) && !defined(RADIO_IS_MRF24J40MC)
+    #error "One transceiver must be defined for the Zigbee application when PA_LNA is enabled"
+#endif
+
+#if (!defined(USE_EXT_PA_LNA) && defined(RADIO_IS_MRF24J40MB)) || (!defined(USE_EXT_PA_LNA) && defined(RADIO_IS_MRF24J40MC))
+    #error "Transceiver requires the enabling of the USE_EXT_PA_LNA macro"
+#endif
+
+#endif
