@@ -2,7 +2,7 @@
 MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
 Version=1.0
 [File000]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SE_CBKE.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SE_CBKE.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -13,9 +13,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File001]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\rtcc.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\rtcc.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -26,9 +26,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File002]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\sralloc.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\sralloc.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -39,9 +39,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File003]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\Console.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\Console.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -52,9 +52,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File004]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\HAL.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\HAL.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -65,9 +65,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File005]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\MSPI.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\MSPI.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -78,9 +78,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File006]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SE_Display.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SE_Display.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -91,9 +91,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File007]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SE_Profile.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SE_Profile.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -104,9 +104,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File008]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SymbolTime.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SymbolTime.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -117,9 +117,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File009]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zAIL.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zAIL.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -130,9 +130,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File010]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zAPS.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zAPS.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -143,9 +143,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File011]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\ZigbeeTasks.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\ZigbeeTasks.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -156,9 +156,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File012]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zMAC_MRF24J40.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zMAC_MRF24J40.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -169,9 +169,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File013]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zNVM.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zNVM.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -182,9 +182,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File014]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zNWK.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zNWK.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -195,9 +195,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File015]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zPHY_MRF24J40.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zPHY_MRF24J40.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -208,9 +208,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File016]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zSecurity_MRF24J40.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zSecurity_MRF24J40.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -221,9 +221,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File017]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zStub_APS.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zStub_APS.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -234,9 +234,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File018]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zZDO.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\zZDO.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -247,9 +247,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File019]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\App_Common.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\App_Common.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -260,9 +260,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File020]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\App_MTR.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\App_MTR.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -273,9 +273,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File021]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SE_MTR.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SE_MTR.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -286,9 +286,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File022]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\merge_main.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\merge_main.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -299,9 +299,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File023]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\Menu_MTR.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\Menu_MTR.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -312,9 +312,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File024]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SE_Certificate_MTR.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SE_Certificate_MTR.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -325,9 +325,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File025]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\myZigBee_ESP.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\myZigBee_ESP.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -338,9 +338,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File026]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\App_ESP.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\App_ESP.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -351,9 +351,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File027]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\Menu_ESP.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\Menu_ESP.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -364,9 +364,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File028]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SE_ESP.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SE_ESP.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -377,9 +377,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File029]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\myZigBee_MTR.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\myZigBee_MTR.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -390,9 +390,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File030]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SE_Certificate_ESP.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\SE_Certificate_ESP.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -403,9 +403,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File031]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\msdlclusterhanddle.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\msdlclusterhanddle.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -416,9 +416,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File032]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\monitor.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\monitor.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -429,9 +429,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File033]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\comm.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\comm.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -442,9 +442,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File034]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\Delay.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\Delay.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -455,9 +455,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File035]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\Log.o
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\Objects\PIC24_256\Log.o
 Folder=Intermediary
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -468,9 +468,9 @@ SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..
 SuiteArgsString=
 ToolArgsString=-g -Wall -mlarge-code -mlarge-data -O1
 TraceCmdString=
-DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1
+DebugOptions=
 [File036]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\.\Build\PIC24_256\CMRI.cof
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\.\Build\PIC24_256\CMRI.cof
 Folder=Output
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -479,11 +479,11 @@ LanguageToolLocation=C:\Program Files\Microchip\mplabc30\v3.31\bin\pic30-ld.exe
 PPAD=$(BINDIR)|.\Build\PIC24_256||$(TMPDIR)|.\Objects\PIC24_256||$(AINDIR)||$(INCDIR)|UART;MSDCLInterface;.;..\..\..\..\Source\ApplicationProfiles\SEProfile\Source\SE_MTR;..\..\..\SEProfile;..\..\..\..\Source\ApplicationProfiles\SEProfile\Source;..\..\..\..\Source\ApplicationProfiles\SEProfile\Interface;..\..\..\..\Source\ZCL\Interface\ClusterDomain\SmartEnergy;..\..\..\..\Source\ZCL\Interface\ClusterDomain\General;..\..\..\..\Source\ZCL\Interface;..\..\..\..\Source\CBKE;..\..\..\..\Source\Common;..\..\..\..\Source\ZigBeeStack||$(LIBDIR)|C:\Program Files\Microchip\MPLAB C30\lib||$(LKRDIR)||
 SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..\..\..\..\Source\Common\sralloc.c|..\..\..\..\Source\Common\Console.c|..\..\..\..\Source\Common\HAL.c|..\..\..\..\Source\Common\MSPI.c|..\..\..\..\Source\ApplicationProfiles\SEProfile\Source\SE_Display.c|..\..\..\..\Source\ApplicationProfiles\SEProfile\Source\SE_Profile.c|..\..\..\..\Source\ZigBeeStack\SymbolTime.c|..\..\..\..\Source\ZigBeeStack\zAIL.c|..\..\..\..\Source\ZigBeeStack\zAPS.c|..\..\..\..\Source\ZigBeeStack\ZigbeeTasks.c|..\..\..\..\Source\ZigBeeStack\zMAC_MRF24J40.c|..\..\..\..\Source\ZigBeeStack\zNVM.c|..\..\..\..\Source\ZigBeeStack\zNWK.c|..\..\..\..\Source\ZigBeeStack\zPHY_MRF24J40.c|..\..\..\..\Source\ZigBeeStack\zSecurity_MRF24J40.c|..\..\..\..\Source\ZigBeeStack\zStub_APS.c|..\..\..\..\Source\ZigBeeStack\zZDO.C|..\..\App_Common.c|App_MTR.c|..\..\..\..\Source\ApplicationProfiles\SEProfile\Source\SE_MTR\SE_MTR.c|merge_main.c|Menu_MTR.c|SE_Certificate_MTR.c|myZigBee_ESP.c|App_ESP.c|Menu_ESP.c|..\..\..\..\Source\ApplicationProfiles\SEProfile\Source\SE_MTR\SE_ESP.c|myZigBee_MTR.c|SE_Certificate_ESP.c|MSDCLInterface\msdlclusterhanddle.c|UART\monitor.c|UART\comm.c|..\..\..\..\Source\Common\Delay.c|..\..\..\..\Source\Common\Log.c||<obj>||<lib>|..\..\..\..\Source\Common\Lib\TLS2130.a|..\..\..\..\Source\Common\Lib\ZCL24bitLib.a|..\..\..\..\Source\Common\Lib\lib24ecc.a||<lkr>||
 SuiteArgsString=
-ToolArgsString=--heap=4196 --stack=2048 -Map="$(BINDIR_)$(TARGETBASE).map" --report-mem -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
+ToolArgsString=--heap=3916 --stack=2048 -Map="$(BINDIR_)$(TARGETBASE).map" --report-mem -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
 TraceCmdString=
-DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_ICD3=1 --defsym=__ICD2RAM=1
+DebugOptions=
 [File037]
-Location=E:\Dropbox\MyWork\SEP\MergStack\MSEB_Demo\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\.\Build\PIC24_256\CMRI.hex
+Location=E:\Dropbox\MyWork\SEPV1.1\Source\CMRI\SEP Progressive merge MTR Merge\SampleApplications\SEProfile\Devices\App_MTR\.\Build\PIC24_256\CMRI.hex
 Folder=Output
 DeviceName=PIC24FJ256GB106
 LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
@@ -492,9 +492,9 @@ LanguageToolLocation=C:\Program Files\Microchip\mplabc30\v3.31\bin\pic30-ld.exe
 PPAD=$(BINDIR)|.\Build\PIC24_256||$(TMPDIR)|.\Objects\PIC24_256||$(AINDIR)||$(INCDIR)|UART;MSDCLInterface;.;..\..\..\..\Source\ApplicationProfiles\SEProfile\Source\SE_MTR;..\..\..\SEProfile;..\..\..\..\Source\ApplicationProfiles\SEProfile\Source;..\..\..\..\Source\ApplicationProfiles\SEProfile\Interface;..\..\..\..\Source\ZCL\Interface\ClusterDomain\SmartEnergy;..\..\..\..\Source\ZCL\Interface\ClusterDomain\General;..\..\..\..\Source\ZCL\Interface;..\..\..\..\Source\CBKE;..\..\..\..\Source\Common;..\..\..\..\Source\ZigBeeStack||$(LIBDIR)|C:\Program Files\Microchip\MPLAB C30\lib||$(LKRDIR)||
 SOLK=<src>|..\..\..\..\Source\CBKE\SE_CBKE.c|..\..\..\..\Source\Common\rtcc.c|..\..\..\..\Source\Common\sralloc.c|..\..\..\..\Source\Common\Console.c|..\..\..\..\Source\Common\HAL.c|..\..\..\..\Source\Common\MSPI.c|..\..\..\..\Source\ApplicationProfiles\SEProfile\Source\SE_Display.c|..\..\..\..\Source\ApplicationProfiles\SEProfile\Source\SE_Profile.c|..\..\..\..\Source\ZigBeeStack\SymbolTime.c|..\..\..\..\Source\ZigBeeStack\zAIL.c|..\..\..\..\Source\ZigBeeStack\zAPS.c|..\..\..\..\Source\ZigBeeStack\ZigbeeTasks.c|..\..\..\..\Source\ZigBeeStack\zMAC_MRF24J40.c|..\..\..\..\Source\ZigBeeStack\zNVM.c|..\..\..\..\Source\ZigBeeStack\zNWK.c|..\..\..\..\Source\ZigBeeStack\zPHY_MRF24J40.c|..\..\..\..\Source\ZigBeeStack\zSecurity_MRF24J40.c|..\..\..\..\Source\ZigBeeStack\zStub_APS.c|..\..\..\..\Source\ZigBeeStack\zZDO.C|..\..\App_Common.c|App_MTR.c|..\..\..\..\Source\ApplicationProfiles\SEProfile\Source\SE_MTR\SE_MTR.c|merge_main.c|Menu_MTR.c|SE_Certificate_MTR.c|myZigBee_ESP.c|App_ESP.c|Menu_ESP.c|..\..\..\..\Source\ApplicationProfiles\SEProfile\Source\SE_MTR\SE_ESP.c|myZigBee_MTR.c|SE_Certificate_ESP.c|MSDCLInterface\msdlclusterhanddle.c|UART\monitor.c|UART\comm.c|..\..\..\..\Source\Common\Delay.c|..\..\..\..\Source\Common\Log.c||<obj>||<lib>|..\..\..\..\Source\Common\Lib\TLS2130.a|..\..\..\..\Source\Common\Lib\ZCL24bitLib.a|..\..\..\..\Source\Common\Lib\lib24ecc.a||<lkr>||
 SuiteArgsString=
-ToolArgsString=--heap=4196 --stack=2048 -Map="$(BINDIR_)$(TARGETBASE).map" --report-mem -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
+ToolArgsString=--heap=3916 --stack=2048 -Map="$(BINDIR_)$(TARGETBASE).map" --report-mem -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
 TraceCmdString=
-DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_ICD3=1 --defsym=__ICD2RAM=1
+DebugOptions=
 [TOOL_LOC_STAMPS]
 tool_loc{069BD372-6CA0-40D4-BF2F-5DC806D05083}=C:\Program Files\Microchip\mplabc30\v3.31\bin\pic30-gcc.exe
 tool_loc{433C3D55-811D-409D-A6BF-159CF9355B42}=C:\Program Files\Microchip\mplabc30\v3.31\bin\pic30-ld.exe

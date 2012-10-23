@@ -4467,6 +4467,10 @@ static void ResetMenu( void )
     PrintMenu_ESP();
 }
 
+extern struct __EndDeviceAnounceTable	EndDeviceAnounceTable;
+extern struct __EndDeviceAnounceTable	PerMissionEndDeviceAnounceTable;
+
+
 void HandleMettringClusterMenuOptions(void)
 {
 
@@ -4632,12 +4636,59 @@ void HandleMettringClusterMenuOptions(void)
             }
             break;
 		}
+		case '2':
+		{
+			switch( menuLevel3 )
+            {
+				static unsigned char AddressofDevice = 0;
+                case 1:
+                    ConsolePutROMString((ROM char * const)"\r\nEnter the destination address:");
+					menuLevel3 = 2;
+					break;
+				case 2:
+				case 3:
+                    AddressofDevice        = GetMACByte(&inputBuf_ESP.buffer[0]);
+				
+					asduData[0]        = EndDeviceAnounceTable.EndDevAddr[AddressofDevice].shortaddress.v[0];
+                    asduData[1]        = EndDeviceAnounceTable.EndDevAddr[AddressofDevice].shortaddress.v[1];
+					/*copy the attribute to be read as in the terminal*/
+                    asduData[2] = 0;
+                    asduData[3] = 0;
+                    /*create read attribute command for basic cluster and*/
+
+					ZDODstAddr.Val  =  ( (asduData[1] << 8) | asduData[0] );
+					xprintf("\n\r Device Number =");
+					PrintChar(AddressofDevice);
+
+					xprintf("\n\r Data asking Short Address =");
+					PrintChar(ZDODstAddr.v[1]);
+					PrintChar(ZDODstAddr.v[0]);
+
+					Seq = asduData[3];
+					Cmd = asduData[2];
+	
+                   	asduData[0] = 0x00; /* ZCL frame Control */
+                    asduData[1] = 0x01; /* manufacutor specific code 0x105f */
+                    asduData[2] = 0x00;
+                    asduData[3] = Seq; /* transaction number */
+                    asduData[4] = Cmd; /* Command */
+                    
+                    SendAPPLRequest( ZDODstAddr, CUSTOMER_CLUSTER_ID1, asduData, 0x05);
+                    ResetMenu(); 
+                    break;
+                default:
+                    ResetMenu();
+                    break;
+			}
+
+
+		}
+		break;
 	}
 
 
 }
 
-extern struct __EndDeviceAnounceTable	EndDeviceAnounceTable;
 
 void HandleNetworkInformation(void)
 {
@@ -4667,10 +4718,63 @@ void HandleNetworkInformation(void)
 	{
 		xprintf("\n\r No Device Connected \n\r");
 	}
+
+
+	if(PerMissionEndDeviceAnounceTable.Counter>0)
+	{
+		unsigned int NumberDevice = 0;
+		xprintf("\n\r Device Without End Device Declered---- \n\r");
+
+		for(Tp=0;Tp<PerMissionEndDeviceAnounceTable.Counter;Tp++)
+		{
+			int Tp2;
+			int Tp3;
+			BOOL FoundDevice = FALSE;
+			for(Tp3=0;Tp3<EndDeviceAnounceTable.Counter;Tp3++)
+			{
+
+				if( EndDeviceAnounceTable.EndDevAddr[Tp3].longaddress.v[7] == PerMissionEndDeviceAnounceTable.EndDevAddr[Tp].longaddress.v[7] &&
+	                EndDeviceAnounceTable.EndDevAddr[Tp3].longaddress.v[6] == PerMissionEndDeviceAnounceTable.EndDevAddr[Tp].longaddress.v[6] &&
+	                EndDeviceAnounceTable.EndDevAddr[Tp3].longaddress.v[5] == PerMissionEndDeviceAnounceTable.EndDevAddr[Tp].longaddress.v[5] &&
+	                EndDeviceAnounceTable.EndDevAddr[Tp3].longaddress.v[4] == PerMissionEndDeviceAnounceTable.EndDevAddr[Tp].longaddress.v[4] &&
+	                EndDeviceAnounceTable.EndDevAddr[Tp3].longaddress.v[3] == PerMissionEndDeviceAnounceTable.EndDevAddr[Tp].longaddress.v[3] &&
+	                EndDeviceAnounceTable.EndDevAddr[Tp3].longaddress.v[2] == PerMissionEndDeviceAnounceTable.EndDevAddr[Tp].longaddress.v[2] &&
+	                EndDeviceAnounceTable.EndDevAddr[Tp3].longaddress.v[1] == PerMissionEndDeviceAnounceTable.EndDevAddr[Tp].longaddress.v[1] &&
+	                EndDeviceAnounceTable.EndDevAddr[Tp3].longaddress.v[0] == PerMissionEndDeviceAnounceTable.EndDevAddr[Tp].longaddress.v[0])
+	                {
+	                    FoundDevice = TRUE;
+						break;
+	                }
+			}
+			
+			if(FoundDevice == FALSE)	
+			{
+				xprintf("\n\r Device Number= %d\n\r",NumberDevice+1);
+				xprintf("\n\r Short Address =");
+				PrintChar(PerMissionEndDeviceAnounceTable.EndDevAddr[Tp].shortaddress.v[1]);
+				PrintChar(PerMissionEndDeviceAnounceTable.EndDevAddr[Tp].shortaddress.v[0]);
+				
+				xprintf("\n\r Long Address =");
+				
+				for(Tp2=7;Tp2>=0;Tp2--)
+				{
+					PrintChar(PerMissionEndDeviceAnounceTable.EndDevAddr[Tp].longaddress.v[Tp2]);
+				}
+				printf("\n\r");
+				NumberDevice++;
+			}
+		}
+	}
+	else
+	{
+		xprintf("\n\r No Device Permissted \n\r");
+	}
+
 	ResetMenu();
 }
 
-
+extern unsigned char RoLongFlage;
+extern LONG_ADDR	RoLoAddr;
 
 void HandleDiscoverRoute(void)
 {
@@ -4732,7 +4836,7 @@ LONG_ADDR IeeeAddr;
 						PrintChar(IeeeAddr.v[Tp]);
 					}
 					xprintf("\n\r");
-	
+					RoLongFlage = 1;
                     MyAskForDeviceAddress(FALSE,IeeeAddr);
                     ResetMenu(); 
                     break;
@@ -4747,5 +4851,9 @@ LONG_ADDR IeeeAddr;
 	}
 
 }
+
+
+
+
 
 

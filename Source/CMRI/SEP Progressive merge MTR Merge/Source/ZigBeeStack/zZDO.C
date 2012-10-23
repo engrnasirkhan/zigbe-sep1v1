@@ -2485,18 +2485,18 @@ SendInactiveEndpoint:
                                     *pTemp++ = ZDOGet();
                                 }
 								
-								printf("\n\rEnd Device Anounce Short Address = ");
-								PrintChar(currentAPSAddress1.shortAddr.v[0]);
-								PrintChar(currentAPSAddress1.shortAddr.v[1]);
+								//printf("\n\rEnd Device Anounce Short Address = ");
+								//PrintChar(currentAPSAddress1.shortAddr.v[0]);
+								//PrintChar(currentAPSAddress1.shortAddr.v[1]);
 									
 								{
 									int Tp;
-									printf("\n\rEnd Device Anounce Address = ");
-									for(Tp=7;Tp>=0;Tp--)
-									{
-										PrintChar(currentAPSAddress1.longAddr.v[Tp]);
-									}
-									printf("\n\r");
+									//printf("\n\rEnd Device Anounce Address = ");
+									//for(Tp=7;Tp>=0;Tp--)
+									//{
+									//	PrintChar(currentAPSAddress1.longAddr.v[Tp]);
+									//}
+									//printf("\n\r");
 								}
 								
 								AddEndDeviceAnnceDevice(currentAPSAddress1.shortAddr,currentAPSAddress1.longAddr);

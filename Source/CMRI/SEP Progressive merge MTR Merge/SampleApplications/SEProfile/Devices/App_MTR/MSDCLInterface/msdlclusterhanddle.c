@@ -69,8 +69,10 @@ struct _MACAddMeter MACAddMeter;
 unsigned char AckReceived = 0;
 extern unsigned char MyCurrentChannel;
 
+const unsigned char GetDataFromMeter[] = {0x1B,0x06,0x02,0x01,0x05,0x06};
+
 //Nimish Add meter
-const unsigned char AddMeterCommand[] = {0x2B,0x11,0x02,0x01,0x64,0x6C,0xFF,0xFF,0x00,0x00};
+const unsigned char AddMeterCommand[] = {0x2B,0x0D,0x02,0x01,0x64,0x6C};
 const unsigned char AddMeterCommandResponce[] = {0x2B,0x11,0x82,0x64,0x6C};
 
 const unsigned char NumberOfAddedMetersCommand[] = {0x1B,0x05,0x01,0x01,0x64,0x6C};
@@ -618,6 +620,60 @@ void CheckDataAndSend(void)
 	{
 		FindNumberofAddedMetersResponce();
 	}	
+	else if(memcmp( (void*)Uart2Buffer, (void*)GetDataFromMeter, sizeof(GetDataFromMeter) ) == 0 )
+	{
+		SHORT_ADDR	SA;
+		SA.Val = Uart2Buffer[6];
+		unsigned char TpStr[30];
+	
+		if(SA.Val <=EndDeviceAnounceTable.Counter)
+		{
+		
+			asduData[0] = 0x00; /* ZCL frame Control */
+			asduData[1] = 0x01; /* manufacutor specific code 0x105f */
+			asduData[2] = 0x00;
+			asduData[3] = 0x00; /* transaction number */
+			asduData[4] = 0x0A; /* Command */
+		
+			addr1[0] =  EndDeviceAnounceTable.EndDevAddr[SA.Val].shortaddress.v[0];
+			addr1[1] =  EndDeviceAnounceTable.EndDevAddr[SA.Val].shortaddress.v[1];  
+				
+			ZDODstAddr.Val =  ( (addr1[1] << 8) | addr1[0] ); 
+			
+			MSDCL_ClusterID.Val = CUSTOMER_CLUSTER_ID1;
+			
+			// sprintf(TpStr,"\n\raddr1[0] = %02x \n\r",addr1[0]);
+			// x2puts(TpStr);
+			// sprintf(TpStr,"\n\raddr1[1] = %02x \n\r",addr1[1]);
+			// x2puts(TpStr);
+			// sprintf(TpStr,"\n\rZDODstAddr.Val = %04X \n\r",ZDODstAddr.Val);
+			// x2puts(TpStr);
+			SendAPPLRequest( ZDODstAddr, MSDCL_ClusterID.Val , asduData, 0x05);
+		}
+		else
+		{
+			SenLen = 0;
+
+			SenUart2Buffer[SenLen++] = 0x1B;	
+			SenUart2Buffer[SenLen++] = 0x05;	
+			SenUart2Buffer[SenLen++] = 0x82;	
+			SenUart2Buffer[SenLen++] = 0x05;	
+			SenUart2Buffer[SenLen++] = 0x06;
+			SenUart2Buffer[SenLen++] = 0x01;
+			SenUart2Buffer[SenLen++] = SA.Val;
+			
+			SenUart2Buffer[1] = SenLen-1;
+			
+			//xprintf("\n\r I Send Data = ");
+			for(Tp=0;Tp<SenLen;Tp++)
+			{
+				//PrintChar(SenUart2Buffer[Tp]); 
+				//ConsolePut(' '); 
+				x2putc(SenUart2Buffer[Tp]);
+				//Delay10us(1);
+			}
+		}
+	}
 	else if(memcmp( (void*)Uart2Buffer, (void*)MyRouteRequest, sizeof(MyRouteRequest) ) == 0 )
 	{
 		
@@ -631,10 +687,10 @@ void CheckDataAndSend(void)
 		unsigned char Tp2 = 0;
 		char TpStr3[20];
 		unsigned char success =0;
-		if(MACAddMeter.NumberMeter<MAX_NEIGHBORS)
+		if(MACAddMeter.NumberMeter<MAX_METER_TO_JOIN)
 		{
 			success = 1;
-			Tp2 = 10;
+			Tp2 = 6;
 			for(Tp=0;Tp<=7;Tp++)
 			{				
 					MACAddMeter.AddMeter[MACAddMeter.NumberMeter].v[Tp] = Uart2Buffer[Tp2];
@@ -1031,7 +1087,7 @@ BOOL CheckDeviceJoiningPermission(LONG_ADDR ieeeAddr)
 {
 
 	int Tp;
-	printf("Checking For Device Permission\n\r");
+	
 	if(MACAddMeter.NumberMeter != 0)
 	{
 		for(Tp=0;Tp<MACAddMeter.NumberMeter;Tp++)
@@ -1056,7 +1112,7 @@ BOOL CheckDeviceJoiningPermission(LONG_ADDR ieeeAddr)
             BOOL FoundDevice = FALSE;
 
 
-			return TRUE;
+			
 
 
             if(PerMissionEndDeviceAnounceTable.Counter>0)
@@ -1074,23 +1130,36 @@ BOOL CheckDeviceJoiningPermission(LONG_ADDR ieeeAddr)
                     ieeeAddr.v[0] == PerMissionEndDeviceAnounceTable.EndDevAddr[i].longaddress.v[0])
                     {
                         FoundDevice = TRUE;
+						break;
                     }
                 }
 
             }
             if(FoundDevice == FALSE)
             {
-                for(Tp=0;Tp<8;Tp++)
-                {
-                    PerMissionEndDeviceAnounceTable.EndDevAddr[PerMissionEndDeviceAnounceTable.Counter].longaddress.v[Tp] = ieeeAddr.v[Tp];
-                }
-                PerMissionEndDeviceAnounceTable.Counter++;
+				if(PerMissionEndDeviceAnounceTable.Counter<MAX_METER_TO_JOIN)
+				{
+	                for(Tp=0;Tp<8;Tp++)
+	                {
+	                    PerMissionEndDeviceAnounceTable.EndDevAddr[PerMissionEndDeviceAnounceTable.Counter].longaddress.v[Tp] = ieeeAddr.v[Tp];
+	                }
+	                PerMissionEndDeviceAnounceTable.Counter++;
+					///ntf("Counter is ----\n\r");
+					//intChar(PerMissionEndDeviceAnounceTable.Counter);
+				
+				
+	                return TRUE;
+				}
+	            else
+				{
+					//printf("Permission Denied\n\r");
+	                return FALSE;
+				}
             }
+			else
+				return TRUE;
 
-            if(PerMissionEndDeviceAnounceTable.Counter<=MAX_METER_TO_JOIN)
-                return TRUE;
-            else
-                return FALSE;
+            
 	}
 	return FALSE;
 }

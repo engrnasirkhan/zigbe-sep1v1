@@ -272,7 +272,7 @@ int main ()
 			ChannelsToBeScanned.Val = ALLOWED_CHANNELS_PRE_CONFIG & 0x03FFF800UL;
 		}
 	}
-	/*{
+	{
 		unsigned long channelMaskToScan = 0x00000800UL;
 		
 		if( ( ChannelsToBeScanned.Val & 0x03FFF800UL ) == 0 )
@@ -290,11 +290,11 @@ int main ()
 		ChannelsToBeScanned.Val &= channelMaskToScan ^ 0xFFFFFFFFUL;
 		
 		//ALLOWED_CHANNELS = 0x3FFFC00UL;
-	}*/
+	}
 	
 
 	//ALLOWED_CHANNELS = 0b000000000111111111101111100000000000;
-	ALLOWED_CHANNELS = 0b000000000000000000000011100000000000;
+	ALLOWED_CHANNELS = 0b0000000000010000000000000000000000;
 
 	while(1)
 	{	

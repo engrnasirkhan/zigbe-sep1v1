@@ -77,6 +77,8 @@
 #if (RF_CHIP == MRF24J40) || (RF_CHIP == UZ2400)
 
 
+extern TICK ASSOCIATE_indication_Time;
+
 // If we are using separate SPI's for the transceiver and a serial EE, redefine
 // the SPI routines.
 #if defined(USE_EXTERNAL_NVM) && !defined(EE_AND_RF_SHARE_SPI)
@@ -2387,6 +2389,7 @@ SendTxBuffer:
             case MLME_ASSOCIATE_request:
             if(NOW_I_AM_NOT_A_CORDINATOR()){
 	                 {
+					 printf("Received ASSOCIATE_request\n\r");
                 /* choose appropriate channel */
                 phyPIB.phyCurrentChannel = params.MLME_ASSOCIATE_request.LogicalChannel;
                 PHYSetLongRAMAddr(0x200, (0x02 | (BYTE)((phyPIB.phyCurrentChannel - 11) << 4)));
@@ -2468,9 +2471,15 @@ SendTxBuffer:
 			break;
             case MLME_ASSOCIATE_response:
             {
+				TICK ASSOCIATE_response_Time;
+				char TpsStr[30];
+				ASSOCIATE_response_Time = TickGet();
+				printf("Sending ASSOCIATE_response\n\r");
+				sprintf(TpsStr,"Timer Taken %lu\n\r",TickGetDiff( ASSOCIATE_response_Time,ASSOCIATE_indication_Time));
+				printf( TpsStr);
                 /* result of an association request */
                 /* generate the association response command packet */
-
+				printf("Sending ASSOCIATE_response\n\r");
                 TxBuffer[TxData++]=ASSOCIATION_RESPONSE;
                 TxBuffer[TxData++]=params.MLME_ASSOCIATE_response.AssocShortAddress.byte.LSB;
                 TxBuffer[TxData++]=params.MLME_ASSOCIATE_response.AssocShortAddress.byte.MSB;
