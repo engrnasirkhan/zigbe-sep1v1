@@ -75,6 +75,9 @@
 
 #include "MSDCL_Commissioning.h"
 
+unsigned char RoLongFlage = 0;
+LONG_ADDR	RoLoAddr;
+
 extern PANIdList ListOfExtendedPANIdinVicinity[MAX_NUMBER_OF_NETWORK_DETECT];
 // ******************************************************************************
 // Configuration Definitions
@@ -202,6 +205,8 @@ extern PANIdList ListOfExtendedPANIdinVicinity[MAX_NUMBER_OF_NETWORK_DETECT];
 SHORT_ADDR ParentAddress;
 // ******************************************************************************
 // Enumerations
+
+TICK ASSOCIATE_indication_Time;
 
 typedef enum _IEEE_DEVICE_TYPE_VALUES
 {
@@ -2729,6 +2734,7 @@ HandleRouteRequest:
                                                             rreq_target_addr = rreq.destinationAddress;
                                                             isConcentrator =  (( rreq.commandOptions & HIGH_CONC_MANY_TO_ONE ) ||
                                                                                ( rreq.commandOptions & LOW_CONC_MANY_TO_ONE ));
+															printf("Creat Route Table 1\n\r");
                                                             if (
                                                                     #if ( ( I_SUPPORT_SYMMETRIC_LINK == 0x01 ) || (  I_SUPPORT_MANY_TO_ONE_HANDLING == 1 ) )
                                                                         !CreateRoutingTableEntries
@@ -2741,7 +2747,7 @@ HandleRouteRequest:
                                                                             isConcentrator
                                                                         )
                                                                     #else
-																		printf("CreateRoutingTableEntries 1\n\r");
+																		
                                                                         !CreateRoutingTableEntries
                                                                         (
                                                                             rreq_target_addr,
@@ -2813,6 +2819,12 @@ HandleRouteRequest:
                                                                         }
                                                                         else
                                                                         {
+																			nwkStatus.flags.bits.bAwaitingRouteDiscovery = 0;
+																			nfree( routeDiscoveryTablePointer[rdIndex] );
+				
+																			// Destroy the buffered message.
+																			SRAMfree( nwkStatus.routingMessages[rdIndex]->dataPtr );
+																			nfree( nwkStatus.routingMessages[rdIndex] );
                                                                             return NO_PRIMITIVE;
                                                                         }
                                                                     }
@@ -2837,6 +2849,13 @@ HandleRouteRequest:
                                                                 }
                                                                 else
                                                                 {
+																	nwkStatus.flags.bits.bAwaitingRouteDiscovery = 0;
+																	nfree( routeDiscoveryTablePointer[rdIndex] );
+
+																	// Destroy the buffered message.
+																	SRAMfree( nwkStatus.routingMessages[rdIndex]->dataPtr );
+																	nfree( nwkStatus.routingMessages[rdIndex] );
+																	printf("Zigbee is not ready\n\r");
                                                                     return NO_PRIMITIVE;
                                                                 }
                                                             }
@@ -2852,6 +2871,12 @@ HandleRouteRequest:
                                                         {
                                                             if ( !( nwkRadius > 1 ) )
                                                             {
+																nwkStatus.flags.bits.bAwaitingRouteDiscovery = 0;
+																nfree( routeDiscoveryTablePointer[rdIndex] );
+
+																// Destroy the buffered message.
+																SRAMfree( nwkStatus.routingMessages[rdIndex]->dataPtr );
+																nfree( nwkStatus.routingMessages[rdIndex] );
                                                                 // If Radius is not greater than one, then
                                                                 // we should not rebroadcast the RREQ frame.
                                                                 NWKDiscardRx();
@@ -5352,6 +5377,7 @@ sendBackRJRsp:
 
             #ifndef I_AM_END_DEVICE
             case MLME_ASSOCIATE_indication:
+				ASSOCIATE_indication_Time = TickGet();
                 #if ( I_SUPPORT_PANID_CONFLICT == 0x01 )
                      if ( panIDConflictStatus.flags.bits.bResolutionInProgress )
                      {
@@ -5363,11 +5389,14 @@ sendBackRJRsp:
                     params.MLME_ASSOCIATE_response.SecurityEnable = params.MLME_ASSOCIATE_indication.SecurityUse;
                 #endif
                 // Copy the indication DeviceAddress to the response DeviceAddress
+				printf("\n\rASSOCIATE_indication Device ID-");
                 for (i=0; i<8; i++)
                 {
                     params.MLME_ASSOCIATE_response.DeviceAddress.v[i] = params.MLME_ASSOCIATE_indication.DeviceAddress.v[i];
+					PrintChar(params.MLME_ASSOCIATE_indication.DeviceAddress.v[i]);
+					printf(":");
                 }
-
+				printf("\n\r");
                 if ((i = NWKLookupNodeByLongAddr( &(params.MLME_ASSOCIATE_indication.DeviceAddress) )) != INVALID_NEIGHBOR_KEY)
                 {
                     #ifdef I_SUPPORT_SECURITY
@@ -7907,7 +7936,8 @@ TryToJoinPotentialParent:
                     SHORT_ADDR  dummyAddr;
                     dummyAddr.Val = 0xffff;
                     /* Create a routing table entry so that we can keep track of the request */
-
+					
+					printf("Creat Route Table 2\n\r");
                     if (
                         #if (I_SUPPORT_SYMMETRIC_LINK == 0x01)
                             !CreateRoutingTableEntries
@@ -7921,7 +7951,7 @@ TryToJoinPotentialParent:
                             )
                         #else
 							
-							printf("CreateRoutingTableEntries 2\n\r");
+							
                             !CreateRoutingTableEntries
                             (
                                 params.NLME_ROUTE_DISCOVERY_request.DstAddr,
@@ -9708,7 +9738,8 @@ MESSAGE_ROUTING_STATUS InitiateRouteDiscovery( BOOL fromUpperLayers, BYTE discov
     // Record when we started route discovery so we can purge this
     // message in case route discovery fails.
     nwkStatus.routingMessages[messageIndex]->timeStamp = TickGet();
-
+	
+	printf("Creat Route Table 3\n\r");
     // Create the Routing and Route Discovery table entries.
     if (
         #if (I_SUPPORT_SYMMETRIC_LINK == 0x01)
@@ -9723,7 +9754,7 @@ MESSAGE_ROUTING_STATUS InitiateRouteDiscovery( BOOL fromUpperLayers, BYTE discov
             )
         #else
 			
-			printf("CreateRoutingTableEntries 3\n\r");
+			
             !CreateRoutingTableEntries
             (
                 nwkStatus.routingMessages[messageIndex]->destinationAddress,
@@ -9788,6 +9819,7 @@ MESSAGE_ROUTING_STATUS InitiateRouteDiscovery( BOOL fromUpperLayers, BYTE discov
              )
            )
         {
+			printf("\n\rLong Address Put into Route discovery\n\r");
             commandOptions = DEFAULT_COMMAND_OPTIONS | DEST_IEEE_ADDRESS_BIT;
         }
         else
@@ -9795,6 +9827,10 @@ MESSAGE_ROUTING_STATUS InitiateRouteDiscovery( BOOL fromUpperLayers, BYTE discov
         {
             commandOptions = DEFAULT_COMMAND_OPTIONS;
         }
+		
+		if(RoLongFlage == 1)
+			commandOptions = DEFAULT_COMMAND_OPTIONS | DEST_IEEE_ADDRESS_BIT;
+		
     *ptr++ = commandOptions;
     *ptr++ = nwkStatus.routeRequestID++;
     *ptr++ = nwkStatus.routingMessages[messageIndex]->destinationAddress.byte.LSB;
@@ -9803,6 +9839,7 @@ MESSAGE_ROUTING_STATUS InitiateRouteDiscovery( BOOL fromUpperLayers, BYTE discov
     #if ( ZIGBEE_PRO == 0x01)
         if ( commandOptions & DEST_IEEE_ADDRESS_BIT )
         {
+			printf("\n\rLong Address Put into Route discovery success\n\r");
             for(i = 0; i < 8; i++)
             {
                 *ptr++ = tmpLongAddr.v[7-i];

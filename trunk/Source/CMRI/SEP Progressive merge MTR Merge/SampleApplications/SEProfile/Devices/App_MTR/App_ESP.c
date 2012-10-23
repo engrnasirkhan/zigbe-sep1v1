@@ -408,9 +408,18 @@ int main_ESP( void )
         HandleUARTRequests();
 		HanddleUART2();
 		HandleChkConnections();
-        StackStatus = ZigBeeTasks( &currentPrimitive_ESP );
-        AppTasks();
-        RTCCProcessEvents();
+
+		{
+			unsigned int Tps;
+			for(Tps=0;Tps<=1;Tps++)
+			{
+		
+		        StackStatus = ZigBeeTasks( &currentPrimitive_ESP );
+		        AppTasks();
+			}
+		}
+
+        //RTCCProcessEvents();
         //HandleESPDisplay();
         #if I_SUPPORT_CBKE == 1
             SE_CBKE_StateMachineHandler();

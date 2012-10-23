@@ -52,7 +52,7 @@
 #ifndef __MSDCL_CLUSTER_HANDLE
 #define __MSDCL_CLUSTER_HANDLE
 
-#define MAX_METER_TO_JOIN   30
+#define MAX_METER_TO_JOIN   50
 
 struct __EndDeviceAnounceAddress
 {	
