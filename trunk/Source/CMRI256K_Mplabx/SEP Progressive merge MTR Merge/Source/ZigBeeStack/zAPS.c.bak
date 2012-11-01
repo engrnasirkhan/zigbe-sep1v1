@@ -594,7 +594,7 @@ ZIGBEE_PRIMITIVE APSTasks(ZIGBEE_PRIMITIVE inputPrimitive)
                 //if( TickGetDiff( currentTime, AuthorizationTimeout) > AUTHORIZATION_TIMEOUT)
                 if( TickGetDiff( currentTime, AuthorizationTimeout) > WaitForAuthentication.Val )
                 {
-                    ConsolePutROMString((ROM char *)"Authorization timeout\r\n");
+                    //ConsolePutROMString((ROM char *)"Authorization timeout\r\n");
                     /* Added at NTS - reset this bAuthorization flag in the NLME_LEAVE primitive */
                       if (NOW_I_AM_A_RFD()){//#ifdef I_AM_RFD
                         PHYTasksPending.bits.PHY_AUTHORIZE = 0;
@@ -4077,8 +4077,6 @@ Send_Transport_Key:
                     updateDevAPSAddr.shortAddr  = params.APSME_UPDATE_DEVICE_request.DeviceShortAddress;
                 }//#endif
 
-				AddEndDeviceAnnceDevice(updateDevAPSAddr.shortAddr,updateDevAPSAddr.longAddr);
-				
                 TxBuffer[TxData++] = params.APSME_UPDATE_DEVICE_request.Status;
 
                 if( !APSFillSecurityRequest(&(params.APSME_UPDATE_DEVICE_request.DestAddress), APSSecure,0x0000) )

@@ -54,7 +54,12 @@
 
 /* Generic files */
 #include "generic.h"
+#include "Compiler.h"
+#include "PPS.h"
+#include "HAL.h"
+#include "Console.h"
 
+//#define DEBUG_ON_NORMAL_BOARD
 /*****************************************************************************
    Constants and Enumerations
  *****************************************************************************/
@@ -98,7 +103,11 @@ All port directioning and SPI must be initialized before calling ZigBeeInit().
 
 void HardwareInit(void)
 {
-
+	
+	AD1PCFG = 0xFFFF;
+	AD1PCFGH = 0xFFFF;
+	CLKDIV = 0;
+	
     SPI1CON1 = 0b0000000100111110;
     SPI1STAT = 0x8000;
 
@@ -113,10 +122,18 @@ void HardwareInit(void)
          * the correct I/O direction - not absolutely neccessary
          * but is the safe thing to do.
         */
-        #if defined (__PIC24FJ256GB110__)
+        #if defined (__PIC24FJ256GB110__) || defined (__PIC24FJ256GB106__)
             EEPROM_SCK_TRIS = 0;
             EEPROM_SDO_TRIS = 0;
             EEPROM_SDI_TRIS = 1;
+            
+            #if defined (__PIC24FJ256GB106__)
+            EEPROM_nWP_TRIS = 0;
+            EEPROM_nWP = 1;
+            
+            EEPROM_nHOLD_TRIS = 0;
+            EEPROM_nHOLD = 1;
+            #endif
         #endif
     #endif
 
@@ -148,8 +165,68 @@ void HardwareInit(void)
 
         RPOR8bits.RP17R     = 5;        /* RF5/RP17   TRANSMIT */
         RPOR15bits.RP31R    = 6;       /* RF13/RP31   RTS */
+    
+    #elif defined (__PIC24FJ256GB106__)    
+		PPSUnLock;
+	
+		#if defined(UART_MODE_COMM)
+
+			iPPSInput(IN_FN_PPS_U2RX,IN_PIN_PPS_RP29);
+			iPPSOutput(OUT_PIN_PPS_RP14,OUT_FN_PPS_U2TX);
+
+			iPPSInput(IN_FN_PPS_U1RX,IN_PIN_PPS_RP17);
+			iPPSOutput(OUT_PIN_PPS_RP10,OUT_FN_PPS_U1TX);
+		
+//			#if !defined(DEBUG_ON_NORMAL_BOARD)
+//			iPPSInput(IN_FN_PPS_U2RX,IN_PIN_PPS_RP29);
+//			iPPSOutput(OUT_PIN_PPS_RP14,OUT_FN_PPS_U2TX);
+//
+//			
+//			iPPSInput(IN_FN_PPS_U1RX,IN_PIN_PPS_RP17);
+//			iPPSOutput(OUT_PIN_PPS_RP10,OUT_FN_PPS_U1TX);
+//			#else
+//			//iPPSInput(IN_FN_PPS_U1RX,IN_PIN_PPS_RP29);			//harsha
+//			//iPPSOutput(OUT_PIN_PPS_RP14,OUT_FN_PPS_U1TX);
+//
+//			iPPSInput(IN_FN_PPS_U1RX,IN_PIN_PPS_RP10);
+//			iPPSOutput(OUT_PIN_PPS_RP17,OUT_FN_PPS_U1TX);
+//
+//			
+//			//iPPSInput(IN_FN_PPS_U1RX,IN_PIN_PPS_RP17);
+//			//iPPSOutput(OUT_PIN_PPS_RP10,OUT_FN_PPS_U1TX);
+//			#endif
+
+			/// need work on this more and check for proer connections
+			
+		//	iPPSInput(IN_FN_PPS_U1RX,IN_PIN_PPS_RP17);
+		//	iPPSOutput(OUT_PIN_PPS_RP8,OUT_FN_PPS_U1TX);
+
+		#elif defined(USB_MODE_COMM)
+			iPPSInput(IN_FN_PPS_U2RX,IN_PIN_PPS_RP14);
+			iPPSOutput(OUT_PIN_PPS_RP29,OUT_FN_PPS_U2TX);
+
+			/// need work on this more and check for proer connections
+			
+		//	iPPSInput(IN_FN_PPS_U1RX,IN_PIN_PPS_RP17);
+		//	iPPSOutput(OUT_PIN_PPS_RP8,OUT_FN_PPS_U1TX);
+
+		#endif
+		//MRF24J40
+		iPPSInput(IN_FN_PPS_SDI1,IN_PIN_PPS_RP26);
+		iPPSOutput(OUT_PIN_PPS_RP19,OUT_FN_PPS_SDO1);
+		iPPSOutput(OUT_PIN_PPS_RP21,OUT_FN_PPS_SCK1OUT);
+		
+		//EEPROM
+		iPPSInput(IN_FN_PPS_SDI2,IN_PIN_PPS_RP23);
+		iPPSOutput(OUT_PIN_PPS_RP4,OUT_FN_PPS_SDO2);
+		iPPSOutput(OUT_PIN_PPS_RP3,OUT_FN_PPS_SCK2OUT);
+		
+		//iPPSInput(IN_FN_PPS_INT1,IN_PIN_PPS_RP11);
+	
+		PPSLock;
     #endif
 
+	#if !defined(YODA_V1A) && !defined(YODA_V1)
     /* The Explorer 16 LEDs */
     /*This intilization for Identify Mode LED glowing*/
     TRISAbits.TRISA2 = 0;
@@ -157,6 +234,9 @@ void HardwareInit(void)
 
     TRISAbits.TRISA6 = 0;
     TRISAbits.TRISA7 = 0;
+    #endif
+    
+
 
     RFIF = 0;
     RFIE = 1;
@@ -165,6 +245,8 @@ void HardwareInit(void)
     {
         RFIF = 1;
     }
+    
+    #if !defined(YODA_V1A) && !defined(YODA_V1)
     /*This intilization for Identify Mode LED glowing*/
     TRISDbits.TRISD2 = 1;
     TRISDbits.TRISD3 = 1;
@@ -179,8 +261,25 @@ void HardwareInit(void)
 
     //IFS1bits.CNIF = 0;
     //IEC1bits.CNIE = 1;
+    #endif
 
 }
+
+void __attribute__((interrupt, auto_psv)) _AddressError ( void )
+{
+
+	printf("Address Trap Received\n\r");
+	
+	DelayMs(200);
+  Nop();
+  Nop();
+  Nop();
+  INTCON1bits.ADDRERR = 0;
+   #if !defined(__DEBUG)
+       Reset();
+   #endif
+}
+
 #elif defined (__C32__)
 
 void HardwareInit(void)
