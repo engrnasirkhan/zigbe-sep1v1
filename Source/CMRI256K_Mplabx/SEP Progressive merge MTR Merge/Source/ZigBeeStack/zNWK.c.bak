@@ -678,6 +678,10 @@ extern BYTE    GetEndPointsFromGroup(INPUT SHORT_ADDR GroupAddr);
 extern ZIGBEE_PRIMITIVE ResolveLocalAddressConflict( void );
 #endif
 
+unsigned char panIdListCounter = 0;
+
+extern BOOL CheckDeviceJoiningPermission(LONG_ADDR ieeeAddr);
+
 /*********************************************************************
  * Function:        BOOL NWKHasBackgroundTasks( void )
  *
@@ -1403,6 +1407,13 @@ FinishBroadcastPacket:
                              ((routeDiscoveryTablePointer[rdIndex]->status.initialRebroadcast == 1) &&
                               ((tempTick.Val - routeDiscoveryTablePointer[rdIndex]->rebroadcastTimer.Val) >= (DWORD)RREQ_BROADCAST_JITTER))))
                         {
+                                printf("rdIndex = ");
+                                PrintChar(rdIndex);
+                                printf("-----");
+
+                                printf("\n\r");
+
+
                             ptr = routeDiscoveryTablePointer[rdIndex]->forwardRREQ;
 
                             //Block TX
@@ -1412,27 +1423,27 @@ FinishBroadcastPacket:
                             // Load up the NWK payload - the route request command frame.
                             for (i=0; i<sizeof_ROUTE_REQUEST_COMMAND; i++)
                             {
-                                #if ( ZIGBEE_PRO == 0x01)
-                                    if ( i == 1 ) //CommandOptions field is always in 2 byte position in the RREQ frame
-                                    {
-                                        commandOptions = *ptr;
-                                    }
-                                #endif
-                                TxBuffer[TxData++] = *ptr++;       // Command, options, ID, dest addr LSB, dest addr MSB, path cost
+                                    #if ( ZIGBEE_PRO == 0x01)
+                                            if ( i == 1 ) //CommandOptions field is always in 2 byte position in the RREQ frame
+                                            {
+                                                    commandOptions = *ptr;
+                                            }
+                                    #endif
+                                    TxBuffer[TxData++] = *ptr++;       // Command, options, ID, dest addr LSB, dest addr MSB, path cost
                             }
                             #if ( ZIGBEE_PRO == 0x01)
-                                if ( commandOptions & DEST_IEEE_ADDRESS_BIT )
-                                {
-                                    for(i = 0; i < sizeof_RREQ_COMMAND_DST_IEEE_ADDR; i++)
+                                    if ( commandOptions & DEST_IEEE_ADDRESS_BIT )
                                     {
-                                        TxBuffer[TxData++] = *ptr++;
+                                            for(i = 0; i < sizeof_RREQ_COMMAND_DST_IEEE_ADDR; i++)
+                                            {
+                                                    TxBuffer[TxData++] = *ptr++;
+                                            }
                                     }
-                                }
                             #endif
                             // Load up the old NWK header (backwards).
                             for (i=0; i<sizeof_ROUTE_REQUEST_COMMAND_HEADER; i++)
                             {
-                                TxBuffer[TxHeader--] = *ptr++;
+                                    TxBuffer[TxHeader--] = *ptr++;
                             }
 
                             // We've handled the first rebroadcast of a received RREQ (if any), so the rest of the
@@ -1443,7 +1454,7 @@ FinishBroadcastPacket:
                             routeDiscoveryTablePointer[rdIndex]->rebroadcastTimer = tempTick;
                             if (routeDiscoveryTablePointer[rdIndex]->status.transmitCounter == 0)
                             {
-                                nfree( routeDiscoveryTablePointer[rdIndex]->forwardRREQ );
+                                    nfree( routeDiscoveryTablePointer[rdIndex]->forwardRREQ );
                             }
 
                             // Load up the MCPS_DATA.request parameters.
@@ -1656,7 +1667,7 @@ FinishBroadcastPacket:
                     for (i=0; (i<ROUTE_DISCOVERY_TABLE_SIZE) && (routeDiscoveryTablePointer[i]==NULL); i++) {}
                     if (i == ROUTE_DISCOVERY_TABLE_SIZE)
                     {
-
+						
                         nwkStatus.flags.bits.bAwaitingRouteDiscovery = 0;
                     }
                 }
@@ -2609,7 +2620,7 @@ HandleRouteRequest:
 
                                                         if (rdIndex < ROUTE_DISCOVERY_TABLE_SIZE)
                                                         {
-
+                                                            printf("\n\rFound Matching Route Discovery\n\r");
                                                             // Device is in the process of discovering this route.  Update the time stamp, in case
                                                             // two nodes are trying to discover the same route, so as not to time out too soon
                                                             // on one of them.
@@ -2718,8 +2729,12 @@ HandleRouteRequest:
                                                             rreq_target_addr = rreq.destinationAddress;
                                                             isConcentrator =  (( rreq.commandOptions & HIGH_CONC_MANY_TO_ONE ) ||
                                                                                ( rreq.commandOptions & LOW_CONC_MANY_TO_ONE ));
+                                                            printf("CreateRoutingTableEntries 1\n\r");
                                                             if (
                                                                     #if ( ( I_SUPPORT_SYMMETRIC_LINK == 0x01 ) || (  I_SUPPORT_MANY_TO_ONE_HANDLING == 1 ) )
+                                                                       
+                                                                         
+
                                                                         !CreateRoutingTableEntries
                                                                         (
                                                                             rreq_target_addr,
@@ -2730,6 +2745,7 @@ HandleRouteRequest:
                                                                             isConcentrator
                                                                         )
                                                                     #else
+									
                                                                         !CreateRoutingTableEntries
                                                                         (
                                                                             rreq_target_addr,
@@ -2853,6 +2869,7 @@ HandleRouteRequest:
                                                             if (!routeDiscoveryTablePointer[rdIndex]->forwardRREQ)
                                                             {
                                                                     // sizeof_ROUTE_REQUEST_COMMAND + sizeof_ROUTE_REQUEST_COMMAND_HEADER = 6 + 16 = 22Bytes
+																	
                                                                     routeDiscoveryTablePointer[rdIndex]->forwardRREQ = SRAMalloc(sizeof_ROUTE_REQUEST_COMMAND +
                                                                                                                               #if ( ZIGBEE_PRO == 0x01)
                                                                                                                                  sizeof_RREQ_COMMAND_DST_IEEE_ADDR +
@@ -5394,6 +5411,18 @@ sendBackRJRsp:
                 {
                     // See if we can allow this node to join.
                     // NOTE: if the application wishes to disallow the join, this is the place to do it.
+					if(CheckDeviceJoiningPermission(params.MLME_ASSOCIATE_indication.DeviceAddress) == FALSE)
+					{
+						params.MLME_ASSOCIATE_response.status = ASSOCIATION_PAN_ACCESS_DENIED;
+                        params.MLME_ASSOCIATE_response.AssocShortAddress.Val = 0xFFFF;
+                        /*
+                         * When we receive COMM status indication on network layer,
+                         * for Differentiating orphan join or association join,
+                         * rejoin_network variable is set accordingly.
+                         */
+                        rejoin_network = ASSOCIATION_REJOIN;
+                        return MLME_ASSOCIATE_response;
+					}
                 #ifdef ZCP_DEBUG
                     if( accessDenied == 1 )
                     {
@@ -6083,6 +6112,7 @@ ResetNeighborTableFields2:
                     PHYSetShortRAMAddr(GPIODIR, 0x00);
                     PHYSetLongRAMAddr(TESTMODE, 0x0F); 
                 #endif
+				panIdListCounter = 0;
                 if(NOW_I_AM_A_CORDINATOR()){//#if defined(I_AM_COORDINATOR)
                     if (params.MLME_SCAN_confirm.ScanType == MAC_SCAN_ENERGY_DETECT)
                     {
@@ -6122,7 +6152,7 @@ NetworkStartupFailure:
                         // then record the channel and its energy.
                         nwkStatus.discoveryInfo.numChannels = 0;
                         ptr = params.MLME_SCAN_confirm.EnergyDetectList;
-                    #ifdef ZCP_PRINTOUT
+                    //#ifdef ZCP_PRINTOUT
                         printf("Scan Confirm Result(Energy Scan):");
                         printf("\r\nUnscanned Channels: ");
                         PrintChar(params.MLME_SCAN_confirm.UnscannedChannels.v[3]);
@@ -6133,9 +6163,12 @@ NetworkStartupFailure:
                         PrintChar(params.MLME_SCAN_confirm.ResultListSize);
                         printf("\r\nEnergyDetectList: ");
                         for(i=0; i < params.MLME_SCAN_confirm.ResultListSize; i++)
+						{
                             PrintChar(params.MLME_SCAN_confirm.EnergyDetectList[i]);
+							printf("\n\r");
+						}
                         printf("\r\n");
-                    #endif
+                    //#endif
 
 
                         for (i=0; i<32; i++)
@@ -6144,7 +6177,10 @@ NetworkStartupFailure:
                             {
                                 if (!(params.MLME_SCAN_confirm.UnscannedChannels.Val & 0x00000001))
                                 {
-                                    if (*ptr < MAX_ENERGY_THRESHOLD)
+									printf("Energy THR = ");
+									PrintChar(*ptr);
+									printf("\n\r");
+                                    if (*ptr < 256)		//MAX_ENERGY_THRESHOLD) // need to do more work on this // nimish
                                     {
                                         nwkStatus.discoveryInfo.channelList[nwkStatus.discoveryInfo.numChannels].channel = i;
                                         nwkStatus.discoveryInfo.channelList[nwkStatus.discoveryInfo.numChannels].energy = *ptr;
@@ -6188,6 +6224,7 @@ NetworkStartupFailure:
                         if (!nwkStatus.discoveryInfo.numChannels)
                         {
                             // If there were no channels with energy below the threshold, return.
+							printf("Network StartupFalure\n\r");
                             nfree( nwkStatus.discoveryInfo.channelList );
                             goto NetworkStartupFailure;
                         }
@@ -6205,15 +6242,54 @@ StartActiveScan:
                     }
                     else // active scan
                     {
+					
+						//x2puts("I Am doing Active Scan\n\r");
                         nwkStatus.discoveryInfo.channelList[nwkStatus.discoveryInfo.currentIndex].networks = params.MLME_SCAN_confirm.ResultListSize;
 
                         // We just need the count of networks.  The beacon info is in our neighbor table.
                         while ((BYTE *)params.MLME_SCAN_confirm.PANDescriptorList)
                         {
+							{
+								int Tp,Tp1;
+								unsigned char SameFound = 0;
+								LONG_ADDR n;
+								memcpy( &n.v[0], &params.MLME_SCAN_confirm.PANDescriptorList->ExtendedPANID.v[0], sizeof(n) );
+								
+								for(Tp=0;Tp<=panIdListCounter;Tp++)
+								{
+									for(Tp1=0;Tp1<8;Tp1++)
+									{
+										//x2putc(n.v[Tp]);
+										if(ListOfExtendedPANIdinVicinity[panIdListCounter].ExtPANId.v[Tp] == n.v[Tp])
+										{
+											SameFound++;
+										}
+										else
+											SameFound = 0;
+									}
+								}
+								
+								if(SameFound<7)
+								{
+									for(Tp=0;Tp<8;Tp++)
+									{
+										//x2putc(n.v[Tp]);
+										ListOfExtendedPANIdinVicinity[panIdListCounter].ExtPANId.v[Tp] = n.v[Tp];
+									}
+									ListOfExtendedPANIdinVicinity[panIdListCounter].ValidData = TRUE;
+									panIdListCounter++;
+								}
+								
+							}
+							
                             ptr = (BYTE *)params.MLME_SCAN_confirm.PANDescriptorList->next;
                             nfree( params.MLME_SCAN_confirm.PANDescriptorList );
                             params.MLME_SCAN_confirm.PANDescriptorList = (PAN_DESCRIPTOR *)ptr;
-                        }
+							
+							
+						}
+							
+							
 
                         if (++nwkStatus.discoveryInfo.currentIndex != nwkStatus.discoveryInfo.numChannels)
                         {
@@ -6353,7 +6429,7 @@ StartActiveScan:
                         PAN_ADDR PANIdList[6];
                         // Process each PAN descriptor in the list
                         {
-	                    unsigned char panIdListCounter = 0;
+	                    
                         while ((BYTE *)params.MLME_SCAN_confirm.PANDescriptorList)
                         {
 
@@ -6451,36 +6527,7 @@ StartActiveScan:
                                 }
                             }
 NextPANDescriptor:			
-							{
-								if( panIdListCounter < MAX_NUMBER_OF_NETWORK_DETECT )
-								{
-									unsigned char panCounter = 0;
-									BOOL enterIntoList = TRUE;
-									
-									for( panCounter = 0; panCounter < MAX_NUMBER_OF_NETWORK_DETECT ; panCounter++)
-									{
-										if( ListOfExtendedPANIdinVicinity[panCounter].ValidData == TRUE )
-										{
-											if( !memcmp(&ListOfExtendedPANIdinVicinity[panCounter].ExtPANId.v[0], &params.MLME_SCAN_confirm.PANDescriptorList->ExtendedPANID.v[0], sizeof(ListOfExtendedPANIdinVicinity[panIdListCounter].ExtPANId)) )
-											{
-												enterIntoList = FALSE;
-												break;	
-											}
-											else
-											{
-												enterIntoList = TRUE;	
-											}
-										}
-									}
-									
-									if( enterIntoList == TRUE )
-									{
-										ListOfExtendedPANIdinVicinity[panIdListCounter].ValidData = TRUE;
-										memcpy( &ListOfExtendedPANIdinVicinity[panIdListCounter].ExtPANId.v[0], &params.MLME_SCAN_confirm.PANDescriptorList->ExtendedPANID.v[0], sizeof(ListOfExtendedPANIdinVicinity[panIdListCounter].ExtPANId) );
-										panIdListCounter++;
-									}
-								}
-							}
+							
 							
                             ptr = (BYTE *)params.MLME_SCAN_confirm.PANDescriptorList->next;
                             nfree( params.MLME_SCAN_confirm.PANDescriptorList );
@@ -7865,9 +7912,10 @@ TryToJoinPotentialParent:
                     SHORT_ADDR  dummyAddr;
                     dummyAddr.Val = 0xffff;
                     /* Create a routing table entry so that we can keep track of the request */
-
+                     printf("CreateRoutingTableEntries 2\n\r");
                     if (
                         #if (I_SUPPORT_SYMMETRIC_LINK == 0x01)
+                            
                             !CreateRoutingTableEntries
                             (
                                 params.NLME_ROUTE_DISCOVERY_request.DstAddr,
@@ -7878,6 +7926,8 @@ TryToJoinPotentialParent:
                                 FALSE
                             )
                         #else
+							
+			
                             !CreateRoutingTableEntries
                             (
                                 params.NLME_ROUTE_DISCOVERY_request.DstAddr,
@@ -7920,6 +7970,7 @@ TryToJoinPotentialParent:
 
                     if (!routeDiscoveryTablePointer[rdIndex]->forwardRREQ)
                     {
+			
                         /*sizeof_ROUTE_REQUEST_COMMAND + sizeof_ROUTE_REQUEST_COMMAND_HEADER = 6 + 16 = 22Bytes*/
                         routeDiscoveryTablePointer[rdIndex]->forwardRREQ = SRAMalloc(sizeof_ROUTE_REQUEST_COMMAND +
                                                                                   #if ( ZIGBEE_PRO == 0x01)
@@ -8669,6 +8720,8 @@ BOOL CreateRoutingTableEntries( SHORT_ADDR targetAddr, BYTE *rdIndex, BYTE *rtIn
         return FALSE;
     }
     *rdIndex = temp;
+	
+    //nfree( routeDiscoveryTablePointer[temp]);
 
     if ((routeDiscoveryTablePointer[temp] = (ROUTE_DISCOVERY_ENTRY *)SRAMalloc( sizeof(ROUTE_DISCOVERY_ENTRY) )) == NULL)
     {
@@ -9664,10 +9717,13 @@ MESSAGE_ROUTING_STATUS InitiateRouteDiscovery( BOOL fromUpperLayers, BYTE discov
     // Record when we started route discovery so we can purge this
     // message in case route discovery fails.
     nwkStatus.routingMessages[messageIndex]->timeStamp = TickGet();
-
+    printf("CreateRoutingTableEntries 3\n\r");
     // Create the Routing and Route Discovery table entries.
     if (
         #if (I_SUPPORT_SYMMETRIC_LINK == 0x01)
+
+             
+
             !CreateRoutingTableEntries
             (
                 nwkStatus.routingMessages[messageIndex]->destinationAddress,
@@ -9678,6 +9734,8 @@ MESSAGE_ROUTING_STATUS InitiateRouteDiscovery( BOOL fromUpperLayers, BYTE discov
                 FALSE
             )
         #else
+			
+            
             !CreateRoutingTableEntries
             (
                 nwkStatus.routingMessages[messageIndex]->destinationAddress,
@@ -9697,6 +9755,8 @@ MESSAGE_ROUTING_STATUS InitiateRouteDiscovery( BOOL fromUpperLayers, BYTE discov
     // route discovery broadcasts must be triggered in the background, unblock the transmit path.
     ZigBeeUnblockTx();
 
+	//nfree( routeDiscoveryTablePointer[rdIndex]->forwardRREQ );
+	//nfree( ptr);
     /*sizeof_ROUTE_REQUEST_COMMAND + sizeof_ROUTE_REQUEST_COMMAND_HEADER = 6 + 16 = 22Bytes*/
     if (!(ptr = routeDiscoveryTablePointer[rdIndex]->forwardRREQ = SRAMalloc(sizeof_ROUTE_REQUEST_COMMAND +
                                                                          #if ( ZIGBEE_PRO == 0x01)

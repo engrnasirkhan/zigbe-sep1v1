@@ -263,14 +263,6 @@ BOOL ZigBeeTasks( ZIGBEE_PRIMITIVE *command )
             case MCPS_DATA_indication:
             case MCPS_PURGE_confirm:
             case MLME_ASSOCIATE_indication:
-			{
-				ZigBeeStatus.nextZigBeeState = NWKTasks( ZigBeeStatus.nextZigBeeState );
-				if(ZigBeeStatus.nextZigBeeState == MLME_ASSOCIATE_request)
-				{
-					ZigBeeStatus.nextZigBeeState = MACTasks(ZigBeeStatus.nextZigBeeState);
-				}
-				break;
-			}
             case MLME_ASSOCIATE_confirm:
             case MLME_DISASSOCIATE_indication:
             case MLME_DISASSOCIATE_confirm:
